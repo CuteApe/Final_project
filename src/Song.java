@@ -19,7 +19,7 @@ public class Song
 		fileName = setFileName();
 		splitName();
 		length = fileDuration(file);
-		//System.out.println(length);
+		System.out.println(length);
 	}
 	
 	private void splitName()
@@ -37,37 +37,20 @@ public class Song
 	
 	private float fileDuration(File file) throws UnsupportedAudioFileException, IOException
 	{
-		try
+		AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
+		if(fileFormat instanceof TAudioFileFormat)
 		{
-			AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
-			if(fileFormat instanceof TAudioFileFormat)
-			{
-				Map<?, ?> props = ((TAudioFileFormat)fileFormat).properties();
-				long microSec = (Long) props.get("duration");
-				float sec = microSec/1000000;
-				int tempMin = (int)sec/60;
-				sec -= tempMin*60;
-				System.out.println(sec /= 100);
-				return sec;
-			}
-			
-			else
-				throw new UnsupportedAudioFileException();
+			Map<?, ?> props = ((TAudioFileFormat)fileFormat).properties();
+			long microSec = (Long) props.get("duration");
+			float sec = microSec/1000000;
+			int min = (int)sec/60;
+			sec -= min*60;
+			sec /= 100;
+			return min + sec;
 		}
 		
-		catch(FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		
-		
-		return 0;
+		else
+			throw new UnsupportedAudioFileException();
 	}
 	
 	private String setFileName()
