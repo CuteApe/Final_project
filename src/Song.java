@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.*;
 import java.util.*;
 import javax.sound.*;
 import javax.sound.sampled.*;
@@ -10,16 +11,16 @@ public class Song
 	String songName;
 	String artist;
 	String album;
-	float length; //Where 
+	double length; //Where decimals represents whole seconds and not fraction of minutes
+	Clip clip;
 	
-	public Song(File file) throws UnsupportedAudioFileException, IOException
+	public Song(File file) throws UnsupportedAudioFileException, IOException, Exception
 	{
 		path = file.getAbsolutePath();
-		System.out.println(path);
 		fileName = setFileName();
 		splitName();
-		length = fileDuration(file);
-		System.out.println(length);
+		clip = createClip(file);
+		length = wavDuration();
 	}
 	
 	private void splitName()
@@ -35,7 +36,8 @@ public class Song
 		}
 	}
 	
-	private float fileDuration(File file) throws UnsupportedAudioFileException, IOException
+	//
+	/*private float mp3Duration(File file) throws UnsupportedAudioFileException, IOException
 	{
 		AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
 		if(fileFormat instanceof TAudioFileFormat)
@@ -51,6 +53,35 @@ public class Song
 		
 		else
 			throw new UnsupportedAudioFileException();
+	}*/
+	
+	private double wavDuration()
+	{
+		double sec = (int)(clip.getBufferSize() / (clip.getFormat().getFrameSize() * clip.getFormat().getFrameRate()));
+		int min = (int) sec/60;
+		sec -= min*60;
+		sec /= 100;
+		return min + sec ;
+	}
+	
+	private Clip createClip(File song) throws Exception
+	{
+		AudioInputStream stream = AudioSystem.getAudioInputStream(song);
+		AudioFormat format = stream.getFormat();
+		if(format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED)
+		{
+			format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, format.getSampleRate(), format.getSampleSizeInBits() * 2, 
+									 format.getChannels(), format.getFrameSize() * 2, format.getFrameRate(), true);
+			stream = AudioSystem.getAudioInputStream(format, stream); 
+		}
+		
+		DataLine.Info info = new DataLine.Info(Clip.class, stream.getFormat(), 
+												(int)stream.getFrameLength() * format.getFrameSize());
+		
+		
+		Clip clip = (Clip)AudioSystem.getLine(info);
+		clip.close();	
+		return clip;
 	}
 	
 	private String setFileName()
@@ -66,7 +97,7 @@ public class Song
 		return null;
 	}
 	
-	public float getDuration()
+	public double getDuration()
 	{
 		return length;
 	}
