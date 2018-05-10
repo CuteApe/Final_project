@@ -12,14 +12,20 @@ public class GUI extends JFrame
 		setLayout(new FlowLayout());
 		pAP = new JButton("Play");
 		add(pAP);
-		
-		
-		
-		
+			
 		actionHandler handler = new actionHandler();
 		pAP.addActionListener(handler);
 		
 	}
+	
+	public static void main (String[] args)
+	{
+			GUI testGUI = new GUI();
+			testGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			testGUI.setSize(500, 500);
+			testGUI.setVisible(true);
+	}
+	
 	private class actionHandler implements ActionListener
 	{
 		
@@ -42,13 +48,4 @@ public class GUI extends JFrame
 		}
 	}
 	
-	
-	
-	public static void main(String[] args) 
-	{
-		GUI testGUI = new GUI();
-		testGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		testGUI.setSize(500, 500);
-		testGUI.setVisible(true);
-	}	
 }
