@@ -13,6 +13,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.JScrollBar;
 
 public class GUI_Test {
 
@@ -95,6 +98,7 @@ public class GUI_Test {
 	 */
 	private void initialize() {
 		frmSpooderfi = new JFrame();
+		frmSpooderfi.setResizable(false);
 		frmSpooderfi.setTitle("Spötiphy");
 		frmSpooderfi.setBounds(100, 100, 450, 300);
 		frmSpooderfi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,7 +120,7 @@ public class GUI_Test {
 		
 		slider = new JSlider();
 		slider.setOrientation(SwingConstants.VERTICAL);
-		slider.setBounds(0, 74, 43, 179);
+		slider.setBounds(0, 74, 43, 191);
 		frmSpooderfi.getContentPane().add(slider);
 		
 		JButton stop = new JButton("Stop");
@@ -136,6 +140,15 @@ public class GUI_Test {
 		});
 		btnPause.setBounds(283, 210, 97, 25);
 		frmSpooderfi.getContentPane().add(btnPause);
+		
+		JTextPane textPane = new JTextPane();
+		textPane.setEditable(false);
+		textPane.setBounds(55, 74, 325, 123);
+		frmSpooderfi.getContentPane().add(textPane);
+		
+		JScrollBar scrollBar = new JScrollBar();
+		scrollBar.setBounds(423, 0, 21, 265);
+		frmSpooderfi.getContentPane().add(scrollBar);
 		
 		slider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e){
