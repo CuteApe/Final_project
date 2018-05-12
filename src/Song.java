@@ -63,8 +63,12 @@ public class Song
 			throw new UnsupportedAudioFileException();
 	}*/
 	
+	
 	private double wavDuration()
 	{
+		if(clip == null)
+			return -1;
+		
 		double sec = (int)(clip.getBufferSize() / (clip.getFormat().getFrameSize() * clip.getFormat().getFrameRate()));
 		int min = (int) sec/60;
 		sec -= min*60;
