@@ -1,43 +1,43 @@
-import com.sun.org.apache.xml.internal.security.Init;
 
 public class HashTabel 
 {
-	String[] array;
-	int aSize;
+	MyTreeSet[] array;
+	int arraySize;
 	int itmInArray;
-	float loadFactor;
 	
 	
-	//Constructor for the hashtable
+	//Constructors for the hash table, with the possibility to define size of the array
 	public HashTabel()
 	{
-		array = new String[10];
-		aSize = 0;
+		array = new MyTreeSet[10];
+		arraySize = 10;
 		itmInArray = 0;
-		loadFactor = 0.75f;
 	}
 	
 	public HashTabel(int intialCapacity)
 	{
-		array = new String[intialCapacity];
-		aSize = 0;
+		array = new MyTreeSet[intialCapacity];
+		arraySize = intialCapacity;
 		itmInArray = 0;
-		loadFactor = 0.75f;
+		
+		for (int i = 0; i < array.length; i++)
+			array[i] = new MyTreeSet();
 	}
 	
-	public HashTabel(int intialCapacity, float loadFactor)
-	{
-		array = new String[intialCapacity];
-		aSize = 0;
-		itmInArray = 0;
-		this.loadFactor = loadFactor;
-	}
 /*
  * ----------------------------------------------------------------------------------------------
  * ----------------------------------------------------------------------------------------------
  * Public functions
  */
-	
+	//Insert function to insert a new song into the table
+	public void insert(Song newSong)
+	{
+		 String artist = newSong.getArtist();
+		 
+		 int hashVal = hashFunc(artist);
+		 
+		 array[hashVal].insert(newSong);
+	}
 	
 	
 	
@@ -54,10 +54,33 @@ public class HashTabel
  * ----------------------------------------------------------------------------------------------
  * Private functions
  */
-	private void hasFunc(String[] stringsToInput, String[] theArray)
+	
+	//Hashin function for the Artists name to get a index in the array
+	private int hashFunc(String s)
 	{
+		int hashKeyVal = 0;	//Variable to carry over the result from the previous letter in the string
 		
+		for (int i = 0; i < s.length(); i++)
+		{
+			int charCode = s.charAt(i);
+			int temp = hashKeyVal;
+			
+			hashKeyVal = (hashKeyVal * 29 + charCode) % arraySize; //Hashing function
+			
+            System.out.println("Hash Key Value " + temp + " * 27 + Character Code " + charCode + " % arraySize " + arraySize + " = " + hashKeyVal);
+		}
+		
+		return hashKeyVal;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static void main(String[] args) 
 	{
 
