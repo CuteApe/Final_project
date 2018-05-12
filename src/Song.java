@@ -6,15 +6,15 @@ import javax.sound.sampled.*;
 import org.tritonus.share.sampled.file.TAudioFileFormat;
 public class Song 
 {
-	String path;
-	String fileName;
-	String songName;
-	String artist;
-	String album;
-	double length; //Where decimals represents whole seconds and not fraction of minutes
-	Clip clip;
+	private String path;
+	private String fileName;
+	private String songName;
+	private String artist;
+	private String album;
+	private double length; //Where decimals represents whole seconds and not fraction of minutes
+	private Clip clip;
 	
-	public Song(File file) throws UnsupportedAudioFileException, IOException, Exception
+	public Song(File file) throws Exception
 	{
 		path = file.getAbsolutePath();
 		fileName = setFileName();
@@ -30,21 +30,29 @@ public class Song
 			String c = String.valueOf(fileName.charAt(i));
 			if(c.equals("-"))
 			{
-				artist = fileName.substring(0, i - 1);
-				songName = fileName.substring(i + 2, fileName.length() - 4);
+				if(artist == null)
+				{
+					artist = fileName.substring(0, i - 1);
+					songName = fileName.substring(i + 2, fileName.length() - 4);
+				}
+				else
+				{
+					album = fileName.substring(artist.length() + 3, i - 1);
+					songName = fileName.substring(i + 2, fileName.length() - 4);
+				}
 			}
 		}
 	}
 	
 	//
-	/*private float mp3Duration(File file) throws UnsupportedAudioFileException, IOException
+	/*private double mp3Duration(File file) throws UnsupportedAudioFileException, IOException
 	{
 		AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
 		if(fileFormat instanceof TAudioFileFormat)
 		{
 			Map<?, ?> props = ((TAudioFileFormat)fileFormat).properties();
 			long microSec = (Long) props.get("duration");
-			float sec = microSec/1000000;
+			double sec = microSec/1000000;
 			int min = (int)sec/60;
 			sec -= min*60;
 			sec /= 100;
@@ -118,6 +126,11 @@ public class Song
 			return songName;
 		
 		return album;
+	}
+	
+	public Clip getClip()
+	{
+		return clip;
 	}
 	
 }
