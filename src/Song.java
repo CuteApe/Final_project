@@ -128,12 +128,6 @@ public class Song
 		return album;
 	}
 	
-	public int compareTo(String s)
-	{
-		return songName.compareTo(s);
-	}
-	
-	
 	public Clip getClip()
 	{
 		return clip;
