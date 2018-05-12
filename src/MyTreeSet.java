@@ -1,20 +1,11 @@
-import java.util.Iterator;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 public class MyTreeSet {
 
 	Node root;
-	private int maxNum = 0;
-	private String maxName = null;
-	private int size = 0;
 	
 	public MyTreeSet()
 	{
 		 root = null;
-		 size = 0;
-		 maxName = null;
-		 maxNum = 0;
 	}
 	
 	public void insert(Song name)
@@ -24,7 +15,6 @@ public class MyTreeSet {
 		//If there is no root node set this one as it
 		if (root==null)
 		{
-			size++;
 			root = newNode;
 		}
 		
@@ -55,7 +45,6 @@ public class MyTreeSet {
 						if (focus==null)
 						{
 							parent.left = newNode;
-							size++;
 							return;
 						}
 					}
@@ -68,7 +57,6 @@ public class MyTreeSet {
 						if(focus==null)
 						{
 							parent.right = newNode;
-							size++;
 							return;
 						}
 					}
@@ -78,15 +66,9 @@ public class MyTreeSet {
 		}
 	}
 	
-	public void makeEmpty()
-	{
-		size = 0;
-		root = null;
-	}
+
 	
-	
-	
-	private Node findNode(String sName)
+	public Node findNode(String sName)
 	{	
 		 Node focus = root;
 		 
@@ -102,15 +84,17 @@ public class MyTreeSet {
 		 }
 	 
 		return focus;
-	}
-
+	}	
 	
-	
-	public static void main(String[] args) {
-		
-		MyTreeSet tree = new MyTreeSet();
-		
-		
+	public void inOrder(Node node)
+	{
+		if (node != null)
+		{
+			inOrder(node.left);
+			
+			System.out.print(node);
+			
+			inOrder(node.right);
+		}
 	}
-
 }

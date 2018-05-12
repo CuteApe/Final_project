@@ -1,4 +1,6 @@
 import java.io.*;
+import java.lang.reflect.Array;
+
 import javax.swing.*;
 import java.util.*;
 
@@ -7,15 +9,31 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class Main 
 {
 	static ArrayList<Song> songs = new ArrayList<Song>();
+	static HashTabel songsTabel = new HashTabel();
 	
 	public static void main(String[] args) throws Exception
 	{
-		
-		createFolder();
 		readFiles();
+		
 		for(Song song: songs)
-			System.out.println(song.getSongName() + " from album " + song.getAlbum() + " by: " + song.getArtist() + " duration " + song.getDuration());
+		{
+			System.out.println(song.getSongName() + " from album " + song.getAlbum() + " By: " + song.getArtist() + " duration " + song.getDuration());
+			songsTabel.insert(song);
+			System.out.println(Arrays.toString(songsTabel.array));
+			
+			System.out.println(songsTabel.find(song));
+			
+			System.out.println(songsTabel.find("These Days feat Jess Glynne Macklemore  Dan Caplen Official Video"));
+			
+			for (MyTreeSet tree : songsTabel.array)
+				tree.inOrder(tree.root);
+		}
+		
 	}
+	
+	
+	
+	
 	
 	
 	public static void createFolder()
@@ -34,7 +52,10 @@ public class Main
 		File folder = new File(foldPath);
 		File[] folderFiles = folder.listFiles();
 		
+		
 		for(File file: folderFiles)
+		{
 			songs.add(new Song(file));
+		}
 	}
 }

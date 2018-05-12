@@ -127,7 +127,7 @@ public class Song
 	public String getAlbum()
 	{
 		if(album == null || album == "")
-			return songName;
+			return "Unknown";
 		
 		return album;
 	}
