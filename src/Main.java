@@ -1,3 +1,4 @@
+import java.awt.EventQueue;
 import java.io.*;
 import java.lang.reflect.Array;
 
@@ -14,26 +15,32 @@ public class Main
 	public static void main(String[] args) throws Exception
 	{
 		readFiles();
-		
 		for(Song song: songs)
 		{
 			System.out.println(song.getSongName() + " from album " + song.getAlbum() + " By: " + song.getArtist() + " duration " + song.getDuration());
 			songsTabel.insert(song);
 			System.out.println(Arrays.toString(songsTabel.array));
-			
-			System.out.println(songsTabel.find(song));
-			
-			System.out.println(songsTabel.find("These Days feat Jess Glynne Macklemore  Dan Caplen Official Video"));
-			
-			for (MyTreeSet tree : songsTabel.array)
-				tree.inOrder(tree.root);
 		}
 		
+		for (int i = 0; i < songsTabel.array.length; i++)
+		{
+			System.out.println(i + " " + songsTabel.array[i].root);
+		}
+		
+		System.out.println(songsTabel.find(songs.get(0)) + " " + songs.get(0).getSongName());
+		System.out.println(songsTabel.find(songs.get(1)) + " " + songs.get(1).getSongName());
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GUI_Test window = new GUI_Test();
+					window.frmSpooderfi.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
-	
-	
-	
-	
 	
 	
 	public static void createFolder()

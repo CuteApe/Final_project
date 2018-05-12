@@ -63,21 +63,6 @@ public class HashTabel
 		return null;
 	}
 	
-	//Function to search for song name
-	public boolean find(String s)
-	{
-		for (int i = 0; i < array.length; i++)
-		{
-			MyTreeSet temp = array[i];
-			
-			if(temp.findNode(s) != null)
-				return true;
-		}
-		
-		
-		return false;
-	}
-	
 		
 /*
  * ----------------------------------------------------------------------------------------------

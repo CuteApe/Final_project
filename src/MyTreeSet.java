@@ -72,6 +72,10 @@ public class MyTreeSet {
 	{	
 		 Node focus = root;
 		 
+		 
+		 if (root == null)
+			 return null;
+		 
 		 while(focus.song.getSongName() != sName)
 		 {
 			 if(focus.song.getSongName().compareTo(sName) < 0)

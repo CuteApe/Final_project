@@ -19,7 +19,7 @@ import javax.swing.JScrollBar;
 
 public class GUI_Test {
 
-	private JFrame frmSpooderfi;
+	public JFrame frmSpooderfi;
 	public static long musicTime = 0;
 	public static Clip sound;
 	public static double increase;
