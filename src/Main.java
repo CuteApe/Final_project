@@ -51,7 +51,6 @@ public class Main
 		File folder = new File(foldPath);
 		File[] folderFiles = folder.listFiles();
 		
-		System.out.println(foldPath);
 		for(File file: folderFiles)
 		{
 			songs.add(new Song(file));
