@@ -11,12 +11,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollBar;
 
@@ -34,6 +32,8 @@ public class GUI_Test extends Main{
 	public JButton pause;
 	public String[] displaySongs;
 	public JList<String> playList;
+	public String lastSong = "";
+	public String path = "";
 	/**
 	 * Launch the application.
 	 */
@@ -133,7 +133,16 @@ public class GUI_Test extends Main{
 		play = new JButton("Play");
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String path = songsTabel.find(songs.get(playList.getSelectedIndex()));
+				path = songsTabel.find(songs.get(playList.getSelectedIndex()));
+				if(sound.isActive())
+				{
+					pause();
+				}
+				if(!lastSong.equals(path))
+				{
+					musicTime = 0;
+				}
+				lastSong = path;
 				playMusic(path);
 			}
 		});
