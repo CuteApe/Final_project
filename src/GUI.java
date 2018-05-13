@@ -18,7 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollBar;
 
-public class GUI_Test extends Main{
+public class GUI extends Main{
 
 	public JFrame frmSpooderfi;
 	public static long musicTime = 0;
@@ -45,7 +45,7 @@ public class GUI_Test extends Main{
 			{
 				try 
 				{
-					GUI_Test window = new GUI_Test();
+					GUI window = new GUI();
 					window.frmSpooderfi.setVisible(true);
 				} 
 				catch (Exception e) 
@@ -59,7 +59,7 @@ public class GUI_Test extends Main{
 	/**
 	 * Create the application.
 	 */
-	public GUI_Test() 
+	public GUI() 
 	{
 		initialize();
 	}
