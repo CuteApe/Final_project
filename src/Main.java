@@ -24,9 +24,10 @@ public class Main
 		
 		for (int i = 0; i < songsTabel.array.length; i++)
 		{
-			System.out.println(i + " " + songsTabel.array[i].root);
+			System.out.println(i);
+			songsTabel.array[i].inOrder(songsTabel.array[i].root);
 		}
-		
+		System.out.println();
 		System.out.println(songsTabel.find(songs.get(0)) + " " + songs.get(0).getSongName());
 		System.out.println(songsTabel.find(songs.get(1)) + " " + songs.get(1).getSongName());
 		

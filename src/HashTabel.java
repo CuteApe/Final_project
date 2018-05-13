@@ -50,15 +50,15 @@ public class HashTabel
 	}
 	
 	//Function to find a return a clip to play a song using the list displayed
-	public Clip find(Song s)
+	public String find(Song s)
 	{
 		 String artist = s.getArtist(); //Hash the artist name to
 		 int hashVal = hashFunc(artist);
 		 
-		 Clip clip = array[hashVal].findNode(s.getSongName()).song.getClip();
+		 String path = array[hashVal].findNode(s.getSongName()).song.getPath();
 		 
-		if (clip != null)
-			return clip;
+		if (path != null)
+			return path;
 		
 		return null;
 	}

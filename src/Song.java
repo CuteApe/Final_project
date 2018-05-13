@@ -137,6 +137,10 @@ public class Song
 		return songName.compareTo(s);
 	}
 	
+	public String getPath()
+	{
+		return path;
+	}
 	
 	public Clip getClip()
 	{
