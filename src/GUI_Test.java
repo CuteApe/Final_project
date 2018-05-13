@@ -1,5 +1,6 @@
 import java.awt.EventQueue;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -10,14 +11,16 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.JScrollBar;
 
-public class GUI_Test {
+public class GUI_Test extends Main{
 
 	public JFrame frmSpooderfi;
 	public static long musicTime = 0;
@@ -29,7 +32,8 @@ public class GUI_Test {
 	public JSlider slider;
 	public JButton stop;
 	public JButton pause;
-
+	public String[] displaySongs;
+	public JList<String> playList;
 	/**
 	 * Launch the application.
 	 */
@@ -113,7 +117,7 @@ public class GUI_Test {
 	{
 		frmSpooderfi = new JFrame();
 		frmSpooderfi.setResizable(false);
-		frmSpooderfi.setTitle("Spötiphy");
+		frmSpooderfi.setTitle("Spï¿½tiphy");
 		frmSpooderfi.setBounds(100, 100, 450, 300);
 		frmSpooderfi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSpooderfi.getContentPane().setLayout(null);
@@ -127,11 +131,10 @@ public class GUI_Test {
 		}
 		
 		play = new JButton("Play");
-		play.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				playMusic("C:\\Users\\gabriel.nilsson1\\Documents\\Music\\Imagine Dragons - Radioactive.wav");
+		play.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String path = songsTabel.find(songs.get(playList.getSelectedIndex()));
+				playMusic(path);
 			}
 		});
 		play.setBounds(157, 205, 118, 35);
@@ -160,10 +163,26 @@ public class GUI_Test {
 		btnPause.setBounds(283, 210, 97, 25);
 		frmSpooderfi.getContentPane().add(btnPause);
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setEditable(false);
+		//Creates a JList to contain and display all the possible songs
+		displaySongs = new String[songs.size()];
+		for (int i = 0; i < songs.size(); i++)
+		{
+			displaySongs[i] = songs.get(i).getArtist() + " - " + songs.get(i).getAlbum() + " - " + songs.get(i).getSongName() + " - " + songs.get(i).getDuration();
+		}
+		playList = new JList<String>(displaySongs);
+		playList.setLayoutOrientation(JList.VERTICAL); //Set the layout so it looks like a list
+		playList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //Set selection to single
+		JScrollPane listScroller = new JScrollPane(playList);
+		listScroller.setBounds(50, 20, 330, 150);
+		
+		playList.setVisible(true);
+		
+		frmSpooderfi.getContentPane().add(listScroller);
+		
+		
+		/*textPane.setEditable(false);
 		textPane.setBounds(55, 74, 325, 123);
-		frmSpooderfi.getContentPane().add(textPane);
+		frmSpooderfi.getContentPane().add(textPane);*/
 		
 		JScrollBar scrollBar = new JScrollBar();
 		scrollBar.setBounds(423, 0, 21, 265);
