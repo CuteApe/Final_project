@@ -19,6 +19,8 @@ public class GUI_Test extends Main{
 	public JButton pause;
 	public String[] displaySongs;
 	public JList<String> playList;
+	public String lastSong = "";
+	public String path = "";
 	/**
 	 * Launch the application.
 	 */
@@ -118,7 +120,16 @@ public class GUI_Test extends Main{
 		play = new JButton("Play");
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String path = songsTabel.find(songs.get(playList.getSelectedIndex()));
+				path = songsTabel.find(songs.get(playList.getSelectedIndex()));
+				if(sound.isActive())
+				{
+					pause();
+				}
+				if(!lastSong.equals(path))
+				{
+					musicTime = 0;
+				}
+				lastSong = path;
 				playMusic(path);
 			}
 		});
