@@ -18,7 +18,6 @@ public class Song
 		splitName();
 		clip = createClip(file);
 		length = wavDuration();
-		System.out.println(toString());
 	}
 	/**
 	*Splites the filename into the name of the song, name of the artist and album if album name exists in the filename.
