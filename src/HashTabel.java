@@ -1,5 +1,3 @@
-import javax.sound.sampled.Clip;
-
 public class HashTabel 
 {
 	MyTreeSet[] array;

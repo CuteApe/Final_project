@@ -11,12 +11,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollBar;
 
