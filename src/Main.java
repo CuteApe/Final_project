@@ -65,11 +65,4 @@ public class Main
 			songs.add(new Song(file));
 		}
 	}
-	
-	
-	//Sets up the GUI and inserts all the local songs into the playlist
-	public void setUp()
-	{
-		
-	}
 }

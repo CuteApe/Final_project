@@ -116,7 +116,8 @@ public class GUI_Test extends Main{
 		play = new JButton("Play");
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				playMusic("C:\\Users\\Admin\\Desktop\\Music\\PEWDIEPIE.wav");
+				String path = songsTabel.find(songs.get(playList.getSelectedIndex()));
+				playMusic(path);
 			}
 		});
 		play.setBounds(157, 205, 118, 35);
@@ -149,7 +150,7 @@ public class GUI_Test extends Main{
 		displaySongs = new String[songs.size()];
 		for (int i = 0; i < songs.size(); i++)
 		{
-			displaySongs[i] = songs.get(i).getArtist() + " - " + songs.get(i).getAlbum() + " - " + songs.get(i).getDuration();
+			displaySongs[i] = songs.get(i).getArtist() + " - " + songs.get(i).getAlbum() + " - " + songs.get(i).getSongName() + " - " + songs.get(i).getDuration();
 		}
 		playList = new JList<String>(displaySongs);
 		playList.setLayoutOrientation(JList.VERTICAL); //Set the layout so it looks like a list
