@@ -59,10 +59,13 @@ public class GUI extends Main{
 	
 	public void volume(float slider)
 	{
-		increase = slider/100;
-		volume = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
-		dB = (float)(Math.log(increase)/Math.log(10.0)*20.0);
-		volume.setValue(dB);
+		if(sound.isActive())
+		{
+			increase = slider/100;
+			volume = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
+			dB = (float)(Math.log(increase)/Math.log(10.0)*20.0);
+			volume.setValue(dB);
+		}
 	}
 	
 	public void pause() 
