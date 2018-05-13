@@ -9,17 +9,16 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Main 
 {
-	static ArrayList<Song> songs = new ArrayList<Song>();
+	public static ArrayList<Song> songs = new ArrayList<Song>();
 	static HashTabel songsTabel = new HashTabel();
-	
 	public static void main(String[] args) throws Exception
 	{
+		createFolder();
 		readFiles();
 		for(Song song: songs)
 		{
 			System.out.println(song.getSongName() + " from album " + song.getAlbum() + " By: " + song.getArtist() + " duration " + song.getDuration());
 			songsTabel.insert(song);
-			System.out.println(Arrays.toString(songsTabel.array));
 		}
 		
 		for (int i = 0; i < songsTabel.array.length; i++)
@@ -60,10 +59,17 @@ public class Main
 		File folder = new File(foldPath);
 		File[] folderFiles = folder.listFiles();
 		
-		
+		System.out.println(foldPath);
 		for(File file: folderFiles)
 		{
 			songs.add(new Song(file));
 		}
+	}
+	
+	
+	//Sets up the GUI and inserts all the local songs into the playlist
+	public void setUp()
+	{
+		
 	}
 }
