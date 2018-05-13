@@ -2,8 +2,5 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/oskar/workspace/Final_Project/Final_project/jl1.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/oskar/workspace/Final_Project/Final_project/mp3spi1.9.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/oskar/workspace/Final_Project/Final_project/tritonus_share.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,12 +1,7 @@
 import java.awt.EventQueue;
 import java.io.*;
-import java.lang.reflect.Array;
-
 import javax.swing.*;
 import java.util.*;
-
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 public class Main 
 {
 	public static ArrayList<Song> songs = new ArrayList<Song>();
@@ -17,8 +12,8 @@ public class Main
 		readFiles();
 		for(Song song: songs)
 		{
-			System.out.println(song.getSongName() + " from album " + song.getAlbum() + " By: " + song.getArtist() + " duration " + song.getDuration());
-			songsTabel.insert(song);
+			if(song.getPath().substring(song.getPath().length()-4, song.getPath().length()-1).equals("wav"))
+				songsTabel.insert(song);
 		}
 		
 		for (int i = 0; i < songsTabel.array.length; i++)
@@ -30,12 +25,17 @@ public class Main
 		System.out.println(songsTabel.find(songs.get(0)) + " " + songs.get(0).getSongName());
 		System.out.println(songsTabel.find(songs.get(1)) + " " + songs.get(1).getSongName());
 		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
 					GUI_Test window = new GUI_Test();
 					window.frmSpooderfi.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
