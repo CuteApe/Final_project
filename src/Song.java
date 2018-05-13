@@ -2,12 +2,13 @@ import java.io.*;
 import javax.sound.sampled.*;
 public class Song 
 {
-	private String path;
-	private String fileName;
-	private String songName;
-	private String artist;
-	private String album;
-	private double length; //Where decimals represents whole seconds and not fraction of minutes
+	private String 
+		path,
+		fileName,
+		songName,
+		artist,
+		album;
+	private double length;
 	private Clip clip;
 	
 	public Song(File file) throws Exception

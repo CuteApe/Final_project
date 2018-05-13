@@ -12,18 +12,10 @@ public class Main
 		readFiles();
 		for(Song song: songs)
 		{
-			if(song.getPath().substring(song.getPath().length()-4, song.getPath().length()-1).equals("wav"))
+			String path = song.getPath();
+			if(path.substring(path.length() - 4, path.length()).equals(".wav"))
 				songsTabel.insert(song);
 		}
-		
-		for (int i = 0; i < songsTabel.array.length; i++)
-		{
-			System.out.println(i);
-			songsTabel.array[i].inOrder(songsTabel.array[i].root);
-		}
-		System.out.println();
-		System.out.println(songsTabel.find(songs.get(0)) + " " + songs.get(0).getSongName());
-		System.out.println(songsTabel.find(songs.get(1)) + " " + songs.get(1).getSongName());
 		
 		EventQueue.invokeLater(new Runnable() 
 		{
