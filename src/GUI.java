@@ -1,22 +1,9 @@
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.awt.event.ActionEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.JSlider;
-import javax.swing.SwingConstants;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.JScrollBar;
+import java.awt.*;
+import java.io.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.sound.sampled.*;
+import java.awt.event.*;
 
 public class GUI extends Main{
 
