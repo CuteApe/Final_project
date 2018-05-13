@@ -33,13 +33,19 @@ public class GUI_Test {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
 					GUI_Test window = new GUI_Test();
 					window.frmSpooderfi.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
@@ -49,7 +55,8 @@ public class GUI_Test {
 	/**
 	 * Create the application.
 	 */
-	public GUI_Test() {
+	public GUI_Test() 
+	{
 		initialize();
 	}
 	
@@ -59,60 +66,72 @@ public class GUI_Test {
 		sound.stop();
 	}
 	
-	public void volume(float slider){
+	public void volume(float slider)
+	{
 		increase = slider/100;
 		volume = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
 		dB = (float)(Math.log(increase)/Math.log(10.0)*20.0);
 		volume.setValue(dB);
 	}
 	
-	public void pause() {
-		if(sound.isActive()) {
+	public void pause() 
+	{
+		if(sound.isActive()) 
+		{
 	        musicTime = sound.getMicrosecondPosition();
 	        sound.stop();
 	        volume(slider.getValue());
 		}
 	}
 	
-	public void playMusic(String musicName) {
+	public void playMusic(String musicName) 
+	{
 		if(!sound.isActive())
 		{
-		try {
-		    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(musicName).getAbsoluteFile());
-		    sound = AudioSystem.getClip();
-		    sound.open(audioInputStream);
-		    sound.setMicrosecondPosition(musicTime);
-		    musicTime = 0;
-		    sound.start();
-		    volume(slider.getValue());
+			try 
+			{
+			    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(musicName).getAbsoluteFile());
+			    sound = AudioSystem.getClip();
+			    sound.open(audioInputStream);
+			    sound.setMicrosecondPosition(musicTime);
+			    musicTime = 0;
+			    sound.start();
+			    volume(slider.getValue());
 		    }
-		   catch(Exception ex) {
-		     System.out.println("Error with playing sound.");
-		     ex.printStackTrace();
+		   catch(Exception ex) 
+			{
+			    System.out.println("Error with playing sound.");
+			    ex.printStackTrace();
 		    }
-		 }
+		}
 	 }
 	
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize() 
+	{
 		frmSpooderfi = new JFrame();
 		frmSpooderfi.setResizable(false);
 		frmSpooderfi.setTitle("Spötiphy");
 		frmSpooderfi.setBounds(100, 100, 450, 300);
 		frmSpooderfi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSpooderfi.getContentPane().setLayout(null);
-		try {
+		try 
+		{
 			sound = AudioSystem.getClip();
-		} catch (LineUnavailableException e1) {
+		} 
+		catch (LineUnavailableException e1) 
+		{
 			e1.printStackTrace();
 		}
 		
 		play = new JButton("Play");
-		play.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				playMusic("C:\\Users\\Admin\\Desktop\\Music\\PEWDIEPIE.wav");
+		play.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				playMusic("C:\\Users\\gabriel.nilsson1\\Documents\\Music\\Imagine Dragons - Radioactive.wav");
 			}
 		});
 		play.setBounds(157, 205, 118, 35);

@@ -1,9 +1,5 @@
 import java.io.*;
-import java.net.*;
-import java.util.*;
-import javax.sound.*;
 import javax.sound.sampled.*;
-import org.tritonus.share.sampled.file.TAudioFileFormat;
 public class Song 
 {
 	private String path;
@@ -21,8 +17,13 @@ public class Song
 		splitName();
 		clip = createClip(file);
 		length = wavDuration();
+		System.out.println(toString());
 	}
-	
+	/**
+	*Splites the filename into the name of the song, name of the artist and album if album name exists in the filename.
+	*Requires the filename to be in a specific format, Artist - Album - Song name.
+	*Where "-" is used as a divider between the different names.
+	*/
 	private void splitName()
 	{
 		for(int i = 0; i < fileName.length() - 1; i++)
@@ -44,26 +45,11 @@ public class Song
 		}
 	}
 	
-	//
-	/*private double mp3Duration(File file) throws UnsupportedAudioFileException, IOException
-	{
-		AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
-		if(fileFormat instanceof TAudioFileFormat)
-		{
-			Map<?, ?> props = ((TAudioFileFormat)fileFormat).properties();
-			long microSec = (Long) props.get("duration");
-			double sec = microSec/1000000;
-			int min = (int)sec/60;
-			sec -= min*60;
-			sec /= 100;
-			return min + sec;
-		}
-		
-		else
-			throw new UnsupportedAudioFileException();
-	}*/
-	
-	
+	/**
+	 * Makes use of Clip to calculate the duration of the song with
+	 * @return the duration of the .wav clip; duration of the song, where the decimals represent whole seconds and not fractions of a minute.
+	 * If a clip doesn't exist of the song it returns -1.
+	 */
 	private double wavDuration()
 	{
 		if(clip == null)
@@ -76,6 +62,11 @@ public class Song
 		return min + sec ;
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 * @return
+	 */
 	private Clip createClip(File song) throws Exception
 	{
 		AudioInputStream stream = AudioSystem.getAudioInputStream(song);
@@ -94,6 +85,11 @@ public class Song
 		Clip clip = (Clip)AudioSystem.getLine(info);
 		clip.close();	
 		return clip;
+	}
+	
+	public String toString()
+	{
+		return songName + " " + getAlbum() + " " + artist;
 	}
 	
 	private String setFileName()
