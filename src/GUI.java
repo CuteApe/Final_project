@@ -1,51 +1,206 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.io.*;
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.awt.event.ActionEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.JScrollBar;
 
-public class GUI extends JFrame
-{
-	private JButton pAP; // Play and Pause
-	public GUI()
+public class GUI_Test extends Main{
+
+	public JFrame frmSpooderfi;
+	public static long musicTime = 0;
+	public static Clip sound;
+	public static double increase;
+	public static FloatControl volume;
+	public static float dB;
+	public JButton play;
+	public JSlider slider;
+	public JButton stop;
+	public JButton pause;
+	public String[] displaySongs;
+	public JList<String> playList;
+	public String lastSong = "";
+	public String path = "";
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) 
 	{
-		super("Spötiphy");
-		setLayout(new FlowLayout());
-		pAP = new JButton("Play");
-		add(pAP);
-			
-		actionHandler handler = new actionHandler();
-		pAP.addActionListener(handler);
-		
-	}
-	
-	public static void main (String[] args)
-	{
-			GUI testGUI = new GUI();
-			testGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			testGUI.setSize(500, 500);
-			testGUI.setVisible(true);
-	}
-	
-	private class actionHandler implements ActionListener
-	{
-		
-		public void actionPerformed(ActionEvent event)
+		EventQueue.invokeLater(new Runnable() 
 		{
-			if(event.getSource() == pAP)
+			public void run() 
 			{
-				if(event.getActionCommand().equals("Play"))
+				try 
 				{
-					pAP.setText("Pause");
-					System.out.println("Playing");
-
-				}
-				else
+					GUI_Test window = new GUI_Test();
+					window.frmSpooderfi.setVisible(true);
+				} 
+				catch (Exception e) 
 				{
-					pAP.setText("Play");
-					System.out.println("Paused");
+					e.printStackTrace();
 				}
 			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public GUI_Test() 
+	{
+		initialize();
+	}
+	
+	public void stop() {
+		musicTime = 0;
+		sound.setMicrosecondPosition(musicTime);
+		sound.stop();
+	}
+	
+	public void volume(float slider)
+	{
+		increase = slider/100;
+		volume = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
+		dB = (float)(Math.log(increase)/Math.log(10.0)*20.0);
+		volume.setValue(dB);
+	}
+	
+	public void pause() 
+	{
+		if(sound.isActive()) 
+		{
+	        musicTime = sound.getMicrosecondPosition();
+	        sound.stop();
+	        volume(slider.getValue());
 		}
 	}
 	
+	public void playMusic(String musicName) 
+	{
+		if(!sound.isActive())
+		{
+			try 
+			{
+			    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(musicName).getAbsoluteFile());
+			    sound = AudioSystem.getClip();
+			    sound.open(audioInputStream);
+			    sound.setMicrosecondPosition(musicTime);
+			    musicTime = 0;
+			    sound.start();
+			    volume(slider.getValue());
+		    }
+		   catch(Exception ex) 
+			{
+			    System.out.println("Error with playing sound.");
+			    ex.printStackTrace();
+		    }
+		}
+	 }
+	
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() 
+	{
+		frmSpooderfi = new JFrame();
+		frmSpooderfi.setResizable(false);
+		frmSpooderfi.setTitle("Spï¿½tiphy");
+		frmSpooderfi.setBounds(100, 100, 450, 300);
+		frmSpooderfi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSpooderfi.getContentPane().setLayout(null);
+		try 
+		{
+			sound = AudioSystem.getClip();
+		} 
+		catch (LineUnavailableException e1) 
+		{
+			e1.printStackTrace();
+		}
+		
+		play = new JButton("Play");
+		play.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				path = songsTabel.find(songs.get(playList.getSelectedIndex()));
+				if(sound.isActive())
+				{
+					pause();
+				}
+				if(!lastSong.equals(path))
+				{
+					musicTime = 0;
+				}
+				lastSong = path;
+				playMusic(path);
+			}
+		});
+		play.setBounds(157, 205, 118, 35);
+		frmSpooderfi.getContentPane().add(play);
+		
+		slider = new JSlider();
+		slider.setOrientation(SwingConstants.VERTICAL);
+		slider.setBounds(0, 74, 43, 191);
+		frmSpooderfi.getContentPane().add(slider);
+		
+		JButton stop = new JButton("Stop");
+		stop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				stop();
+			}
+		});
+		stop.setBounds(55, 210, 97, 25);
+		frmSpooderfi.getContentPane().add(stop);
+		
+		JButton btnPause = new JButton("Pause");
+		btnPause.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pause();
+			}
+		});
+		btnPause.setBounds(283, 210, 97, 25);
+		frmSpooderfi.getContentPane().add(btnPause);
+		
+		//Creates a JList to contain and display all the possible songs
+		displaySongs = new String[songs.size()];
+		for (int i = 0; i < songs.size(); i++)
+		{
+			displaySongs[i] = songs.get(i).getArtist() + " - " + songs.get(i).getAlbum() + " - " + songs.get(i).getSongName() + " - " + songs.get(i).getDuration();
+		}
+		playList = new JList<String>(displaySongs);
+		playList.setLayoutOrientation(JList.VERTICAL); //Set the layout so it looks like a list
+		playList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //Set selection to single
+		JScrollPane listScroller = new JScrollPane(playList);
+		listScroller.setBounds(50, 20, 330, 150);
+		
+		playList.setVisible(true);
+		
+		frmSpooderfi.getContentPane().add(listScroller);
+		
+		
+		/*textPane.setEditable(false);
+		textPane.setBounds(55, 74, 325, 123);
+		frmSpooderfi.getContentPane().add(textPane);*/
+		
+		JScrollBar scrollBar = new JScrollBar();
+		scrollBar.setBounds(423, 0, 21, 265);
+		frmSpooderfi.getContentPane().add(scrollBar);
+		
+		slider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e){
+				volume(slider.getValue());
+			}
+		});
+	}
 }

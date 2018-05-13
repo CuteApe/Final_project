@@ -23,7 +23,7 @@ public class Main
 			{
 				try 
 				{
-					GUI_Test window = new GUI_Test();
+					GUI window = new GUI();
 					window.frmSpooderfi.setVisible(true);
 				} 
 				catch (Exception e) 
