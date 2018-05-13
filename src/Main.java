@@ -12,9 +12,11 @@ public class Main
 		readFiles();
 		for(Song song: songs)
 		{
+			String path = song.getPath();
+			if(path.substring(path.length() - 4, path.length()).equals(".wav"))
 				songsTabel.insert(song);
 		}
-
+		
 		EventQueue.invokeLater(new Runnable() 
 		{
 			public void run() 
