@@ -103,7 +103,7 @@ public class GUI_Test extends Main{
 	private void initialize() {
 		frmSpooderfi = new JFrame();
 		frmSpooderfi.setResizable(false);
-		frmSpooderfi.setTitle("Spötiphy");
+		frmSpooderfi.setTitle("Spï¿½tiphy");
 		frmSpooderfi.setBounds(100, 100, 450, 300);
 		frmSpooderfi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSpooderfi.getContentPane().setLayout(null);
