@@ -14,6 +14,6 @@ public class Node {
 	
 	public String toString()
 	{
-		return song.getArtist() + " " + song.getAlbum() + " " + song.getDuration() + " " + song.getSongName();
+		return song.getArtist() + " " + song.getDuration() + " " + song.getSongName();
 	}
 }

@@ -1,4 +1,6 @@
 import java.io.*;
+import java.text.DecimalFormat;
+
 import javax.sound.sampled.*;
 public class Song 
 {
@@ -6,8 +8,7 @@ public class Song
 		path,
 		fileName,
 		songName,
-		artist,
-		album;
+		artist;
 	private double length;
 	private Clip clip;
 	
@@ -18,6 +19,7 @@ public class Song
 		splitName();
 		clip = createClip(file);
 		length = wavDuration();
+		System.out.println(toString());
 	}
 	/**
 	*Splites the filename into the name of the song, name of the artist and album if album name exists in the filename.
@@ -31,16 +33,30 @@ public class Song
 			String c = String.valueOf(fileName.charAt(i));
 			if(c.equals("-"))
 			{
-				if(artist == null)
+				int x = 0;
+				int y = 0;
+				for(int j = i; j > 0; j--)
 				{
-					artist = fileName.substring(0, i - 1);
-					songName = fileName.substring(i + 2, fileName.length() - 4);
+					String a = String.valueOf(fileName.charAt(j));
+					if(!a.equals(" ") && !a.equals("-"))
+					{
+						x = j;
+						break;
+					}
 				}
-				else
+				
+				for(int j = i; j < fileName.length(); j++)
 				{
-					album = fileName.substring(artist.length() + 3, i - 1);
-					songName = fileName.substring(i + 2, fileName.length() - 4);
+					String a = String.valueOf(fileName.charAt(j));
+					if(!a.equals(" ") && !a.equals("-"))
+					{
+						y = j;
+						break;
+					}
 				}
+				
+				artist = fileName.substring(0, x + 1);
+				songName = fileName.substring(y, fileName.length() - 4);
 			}
 		}
 	}
@@ -58,15 +74,14 @@ public class Song
 		double sec = (int)(clip.getBufferSize() / (clip.getFormat().getFrameSize() * clip.getFormat().getFrameRate()));
 		int min = (int) sec/60;
 		sec -= min*60;
-		min *= 100;
-		double duration = Math.round(min + sec);
-		return duration /100;
+		sec /= 100;
+		return min + sec;
 	}
 	
 	/**
 	 * 
-	 * @param 
-	 * @return
+	 * @param song 
+	 * @return clip with PCM_SIGNED encoding
 	 */
 	private Clip createClip(File song) throws Exception
 	{
@@ -90,7 +105,8 @@ public class Song
 	
 	public String toString()
 	{
-		return songName + " - " + artist + " - " + getDuration();
+		DecimalFormat df = new DecimalFormat("0.00");
+		return songName + " - " + artist + " - " + df.format(getDuration()).replace(',', '.');
 	}
 	
 	private String setFileName()
@@ -119,14 +135,6 @@ public class Song
 	public String getArtist()
 	{
 		return artist;
-	}
-	
-	public String getAlbum()
-	{
-		if(album == null || album == "")
-			return "Unknown";
-		
-		return album;
 	}
 	
 	public int compareTo(String s)
