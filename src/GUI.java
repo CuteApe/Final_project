@@ -132,15 +132,14 @@ public class GUI extends Main{
 				path = songsTabel.find(songs.get(playList.getSelectedIndex()));
 				if(sound.isActive())
 				{
-					pause();
+					stop();
 				}
-				if(!lastSong.equals(path) && sound.isActive())
+				if(!lastSong.equals(path))
 				{
 					musicTime = 0;
-					pause();
+					volume(slider.getValue());
 				}
 				lastSong = path;
-				System.out.println(!songTextField.equals(""));
 				playMusic(path);
 			}
 		});
