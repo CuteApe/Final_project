@@ -21,6 +21,10 @@ public class GUI extends Main{
 	public JList<String> playList;
 	public String lastSong = "";
 	public String path = "";
+	public JLabel artistLabel;
+	public JLabel songLabel;
+	public JTextField artistTextField;
+	public JTextField songTextField;
 	/**
 	 * Launch the application.
 	 */
@@ -54,6 +58,7 @@ public class GUI extends Main{
 	public void stop() {
 		musicTime = 0;
 		sound.setMicrosecondPosition(musicTime);
+		volume(slider.getValue());
 		sound.stop();
 	}
 	
@@ -107,7 +112,7 @@ public class GUI extends Main{
 	{
 		frmSpooderfi = new JFrame();
 		frmSpooderfi.setResizable(false);
-		frmSpooderfi.setTitle("Spï¿½tiphy");
+		frmSpooderfi.setTitle("Spötiphy");
 		frmSpooderfi.setBounds(100, 100, 450, 300);
 		frmSpooderfi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSpooderfi.getContentPane().setLayout(null);
@@ -123,16 +128,19 @@ public class GUI extends Main{
 		play = new JButton("Play");
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				volume(slider.getValue());
 				path = songsTabel.find(songs.get(playList.getSelectedIndex()));
 				if(sound.isActive())
 				{
 					pause();
 				}
-				if(!lastSong.equals(path))
+				if(!lastSong.equals(path) && sound.isActive())
 				{
 					musicTime = 0;
+					pause();
 				}
 				lastSong = path;
+				System.out.println(!songTextField.equals(""));
 				playMusic(path);
 			}
 		});
@@ -148,6 +156,7 @@ public class GUI extends Main{
 		stop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				stop();
+				volume(slider.getValue());
 			}
 		});
 		stop.setBounds(55, 210, 97, 25);
@@ -157,13 +166,33 @@ public class GUI extends Main{
 		btnPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pause();
+				volume(slider.getValue());
 			}
 		});
 		btnPause.setBounds(283, 210, 97, 25);
 		frmSpooderfi.getContentPane().add(btnPause);
 		
+		// Creates textfields and Labels where you can search for your favorite artist or song
+		artistLabel = new JLabel("Search for artist");
+		artistLabel.setBounds(0,0,100,15);
+		frmSpooderfi.getContentPane().add(artistLabel);
+		
+		artistTextField = new JTextField();
+		artistTextField.setBounds(0, 20, 100, 20);
+		frmSpooderfi.getContentPane().add(artistTextField);
+		
+		songLabel = new JLabel("Search for song");
+		songLabel.setBounds(120,0,100,15);
+		frmSpooderfi.getContentPane().add(songLabel);
+		
+		songTextField = new JTextField();
+		songTextField.setBounds(120, 20, 100, 20);
+		frmSpooderfi.getContentPane().add(songTextField);
+		
+		
 		//Creates a JList to contain and display all the possible songs
 		displaySongs = new String[songs.size()];
+		
 		for (int i = 0; i < songs.size(); i++)
 		{
 			displaySongs[i] = songs.get(i).getArtist() + " - " + songs.get(i).getAlbum() + " - " + songs.get(i).getSongName() + " - " + songs.get(i).getDuration();
@@ -172,25 +201,17 @@ public class GUI extends Main{
 		playList.setLayoutOrientation(JList.VERTICAL); //Set the layout so it looks like a list
 		playList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //Set selection to single
 		JScrollPane listScroller = new JScrollPane(playList);
-		listScroller.setBounds(50, 20, 330, 150);
+		listScroller.setBounds(50, 50, 330, 150);
 		
 		playList.setVisible(true);
 		
 		frmSpooderfi.getContentPane().add(listScroller);
-		
-		
-		/*textPane.setEditable(false);
-		textPane.setBounds(55, 74, 325, 123);
-		frmSpooderfi.getContentPane().add(textPane);*/
-		
-		JScrollBar scrollBar = new JScrollBar();
-		scrollBar.setBounds(423, 0, 21, 265);
-		frmSpooderfi.getContentPane().add(scrollBar);
 		
 		slider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e){
 				volume(slider.getValue());
 			}
 		});
+		
 	}
 }
