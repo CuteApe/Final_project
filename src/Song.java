@@ -90,7 +90,7 @@ public class Song
 	
 	public String toString()
 	{
-		return songName + " " + getAlbum() + " " + artist;
+		return songName + " - " + getAlbum() + " - " + artist + " - " + getDuration();
 	}
 	
 	private String setFileName()
@@ -131,7 +131,7 @@ public class Song
 	
 	public int compareTo(String s)
 	{
-		return songName.compareTo(s);
+		return toString().compareTo(s);
 	}
 	
 	public String getPath()

@@ -1,11 +1,13 @@
-import java.awt.*;
 import java.io.*;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.ListModel;
 import javax.sound.sampled.*;
 import java.awt.event.*;
 
-public class GUI extends Main{
+public class GUI extends Main
+{
 
 	public JFrame frmSpooderfi;
 	public static long musicTime = 0;
@@ -13,40 +15,25 @@ public class GUI extends Main{
 	public static double increase;
 	public static FloatControl volume;
 	public static float dB;
-	public JButton play;
 	public JSlider slider;
-	public JButton stop;
-	public JButton pause;
+	public JButton 
+		play,
+		stop,
+		pause,
+		sortArtist,
+		sortSong,
+		sortDur;
 	public String[] displaySongs;
-	public JList<String> playList;
+	public JList<Song> playList;
 	public String lastSong = "";
 	public String path = "";
-	public JLabel artistLabel;
-	public JLabel songLabel;
-	public JTextField artistTextField;
-	public JTextField songTextField;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) 
-	{
-		EventQueue.invokeLater(new Runnable() 
-		{
-			public void run() 
-			{
-				try 
-				{
-					GUI window = new GUI();
-					window.frmSpooderfi.setVisible(true);
-				} 
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	public JLabel 
+		artistLabel,
+		songLabel;
+	public JTextField 
+		artistTextField,
+		songTextField;
+	private DefaultListModel<Song> dlm;
 	/**
 	 * Create the application.
 	 */
@@ -105,11 +92,30 @@ public class GUI extends Main{
 		}
 	 }
 	
+	public void sortBy(String s)
+	{
+		Comparator<Song> comp;
+		
+		if(s == "Duration")
+			comp = new CompDuration();
+		else if(s == "Artist")
+			comp = new CompArtist();
+		else 
+			comp = new CompSong();
+		
+		Collections.sort(songs, comp);
+		
+		dlm.clear();
+		for (int i = 0; i < songs.size(); i++)
+			dlm.addElement(songs.get(i));
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() 
 	{
+		dlm = new DefaultListModel<Song>();
 		frmSpooderfi = new JFrame();
 		frmSpooderfi.setResizable(false);
 		frmSpooderfi.setTitle("Spötiphy");
@@ -129,7 +135,11 @@ public class GUI extends Main{
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				volume(slider.getValue());
-				path = songsTabel.find(songs.get(playList.getSelectedIndex()));
+				//path = songsTabel.find(songs.get(playList.getSelectedIndex()));
+				System.out.println(playList.getSelectedValue());
+				
+				path = songsTabel.find(dlm.getElementAt(playList.getSelectedIndex()));
+						
 				if(sound.isActive())
 				{
 					stop();
@@ -152,22 +162,40 @@ public class GUI extends Main{
 		frmSpooderfi.getContentPane().add(slider);
 		
 		JButton stop = new JButton("Stop");
-		stop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		stop.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				stop();
 				volume(slider.getValue());
 			}
 		});
+		
 		stop.setBounds(55, 210, 97, 25);
 		frmSpooderfi.getContentPane().add(stop);
 		
+		//HERE
+		JButton sortSong = new JButton("Sort By Song");
+		sortSong.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				sortBy("Duration");
+			}
+		});
+		sortSong.setBounds(150, 150, 50, 50);
+		frmSpooderfi.getContentPane().add(sortSong);
+		
 		JButton btnPause = new JButton("Pause");
-		btnPause.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnPause.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				pause();
 				volume(slider.getValue());
 			}
 		});
+		
 		btnPause.setBounds(283, 210, 97, 25);
 		frmSpooderfi.getContentPane().add(btnPause);
 		
@@ -190,15 +218,18 @@ public class GUI extends Main{
 		
 		
 		//Creates a JList to contain and display all the possible songs
-		displaySongs = new String[songs.size()];
+		//displaySongs = new String[songs.size()];
+		for (Song song: songs)
+			dlm.addElement(song);
 		
-		for (int i = 0; i < songs.size(); i++)
-		{
-			displaySongs[i] = songs.get(i).getArtist() + " - " + songs.get(i).getAlbum() + " - " + songs.get(i).getSongName() + " - " + songs.get(i).getDuration();
-		}
-		playList = new JList<String>(displaySongs);
+		//for(int i = 0; i < songs.size() - 1; i++)
+		//	displaySongs[i] = songs.get(i).toString();
+		
+		playList = new JList(dlm);
 		playList.setLayoutOrientation(JList.VERTICAL); //Set the layout so it looks like a list
 		playList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //Set selection to single
+		
+		playList.setModel(dlm);
 		JScrollPane listScroller = new JScrollPane(playList);
 		listScroller.setBounds(50, 50, 330, 150);
 		
