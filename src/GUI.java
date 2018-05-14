@@ -2,13 +2,11 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.ListModel;
 import javax.sound.sampled.*;
 import java.awt.event.*;
 
 public class GUI extends Main
 {
-
 	public JFrame frmSpooderfi;
 	public static long musicTime = 0;
 	public static Clip sound;
@@ -121,9 +119,10 @@ public class GUI extends Main
 	private void initialize() 
 	{
 		dlm = new DefaultListModel<Song>();
+		
 		frmSpooderfi = new JFrame();
 		frmSpooderfi.setResizable(false);
-		frmSpooderfi.setTitle("Spötiphy");
+		frmSpooderfi.setTitle("Spï¿½tiphy");
 		frmSpooderfi.setBounds(100, 100, 460, 400);
 		frmSpooderfi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSpooderfi.getContentPane().setLayout(null);
