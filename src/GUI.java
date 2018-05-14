@@ -28,12 +28,9 @@ public class GUI extends Main
 	public String[] displaySearch;
 	public String lastSong = "";
 	public String path = "";
-	public JLabel 
-		artistLabel,
-		songLabel;
-	public JTextField 
-		artistTextField,
-		songTextField;
+	private String filter = "";
+	public JLabel searchLabel;
+	public JTextField searchTextField;
 	private DefaultListModel<Song> dlm;
 	/**
 	 * Create the application.
@@ -109,8 +106,15 @@ public class GUI extends Main
 		dlm.clear();
 		for (int i = 0; i < songs.size(); i++)
 			dlm.addElement(songs.get(i));
+		filterList(filter);
 	}
-	
+	public void filterList(String filter)
+	{
+		dlm.clear();
+		for(Song s: songs)
+			if(s.toString().toLowerCase().contains(filter.toLowerCase()))
+				dlm.addElement(s);
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -219,21 +223,24 @@ public class GUI extends Main
 		frmSpooderfi.getContentPane().add(btnPause);
 		
 		// Creates textfields and Labels where you can search for your favorite artist or song
-		artistLabel = new JLabel("Search for artist");
-		artistLabel.setBounds(0,0,100,15);
-		frmSpooderfi.getContentPane().add(artistLabel);
+		searchLabel = new JLabel("Search for artist");
+		searchLabel.setBounds(0,0,100,15);
+		frmSpooderfi.getContentPane().add(searchLabel);
 		
-		artistTextField = new JTextField();
-		artistTextField.setBounds(0, 20, 100, 20);
-		frmSpooderfi.getContentPane().add(artistTextField);
-		
-		songLabel = new JLabel("Search for song");
-		songLabel.setBounds(120,0,100,15);
-		frmSpooderfi.getContentPane().add(songLabel);
-		
-		songTextField = new JTextField();
-		songTextField.setBounds(120, 20, 100, 20);
-		frmSpooderfi.getContentPane().add(songTextField);
+		searchTextField = new JTextField();
+		searchTextField.setBounds(0, 20, 100, 20);
+		searchTextField.getDocument().addDocumentListener(new DocumentListener(){
+            @Override public void insertUpdate(DocumentEvent e) { filter(); }
+            @Override public void removeUpdate(DocumentEvent e) { filter(); }
+            @Override public void changedUpdate(DocumentEvent e) {}
+            private void filter() 
+            {
+                filter = searchTextField.getText();
+                filterList(filter);
+            }
+        });
+		frmSpooderfi.getContentPane().add(searchTextField);
+		;
 		
 		
 		//Creates a JList to contain and display all the possible songs
