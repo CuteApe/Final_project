@@ -17,7 +17,9 @@ public class GUI extends Main{
 	public JSlider slider;
 	public JButton stop;
 	public JButton pause;
+	public JButton search;
 	public String[] displaySongs;
+	public String[] displaySearch;
 	public JList<String> playList;
 	public String lastSong = "";
 	public String path = "";
@@ -113,7 +115,7 @@ public class GUI extends Main{
 		frmSpooderfi = new JFrame();
 		frmSpooderfi.setResizable(false);
 		frmSpooderfi.setTitle("Spötiphy");
-		frmSpooderfi.setBounds(100, 100, 450, 300);
+		frmSpooderfi.setBounds(100, 100, 460, 400);
 		frmSpooderfi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSpooderfi.getContentPane().setLayout(null);
 		try 
@@ -143,12 +145,12 @@ public class GUI extends Main{
 				playMusic(path);
 			}
 		});
-		play.setBounds(157, 205, 118, 35);
+		play.setBounds(180, 320, 120, 35);
 		frmSpooderfi.getContentPane().add(play);
 		
 		slider = new JSlider();
 		slider.setOrientation(SwingConstants.VERTICAL);
-		slider.setBounds(0, 74, 43, 191);
+		slider.setBounds(0, 170, 43, 191);
 		frmSpooderfi.getContentPane().add(slider);
 		
 		JButton stop = new JButton("Stop");
@@ -158,7 +160,7 @@ public class GUI extends Main{
 				volume(slider.getValue());
 			}
 		});
-		stop.setBounds(55, 210, 97, 25);
+		stop.setBounds(55, 320, 120, 35);
 		frmSpooderfi.getContentPane().add(stop);
 		
 		JButton btnPause = new JButton("Pause");
@@ -168,7 +170,7 @@ public class GUI extends Main{
 				volume(slider.getValue());
 			}
 		});
-		btnPause.setBounds(283, 210, 97, 25);
+		btnPause.setBounds(305, 320, 120, 35);
 		frmSpooderfi.getContentPane().add(btnPause);
 		
 		// Creates textfields and Labels where you can search for your favorite artist or song
@@ -196,11 +198,16 @@ public class GUI extends Main{
 		{
 			displaySongs[i] = songs.get(i).getArtist() + " - " + songs.get(i).getAlbum() + " - " + songs.get(i).getSongName() + " - " + songs.get(i).getDuration();
 		}
+	/*	if()
+		{
+			
+		} */
 		playList = new JList<String>(displaySongs);
+	//	playList = new JList<String>(displaySearch);
 		playList.setLayoutOrientation(JList.VERTICAL); //Set the layout so it looks like a list
 		playList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //Set selection to single
 		JScrollPane listScroller = new JScrollPane(playList);
-		listScroller.setBounds(50, 50, 330, 150);
+		listScroller.setBounds(55, 120, 370, 200);
 		
 		playList.setVisible(true);
 		
