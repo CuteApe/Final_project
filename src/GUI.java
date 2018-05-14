@@ -223,7 +223,7 @@ public class GUI extends Main
 		frmSpooderfi.getContentPane().add(btnPause);
 		
 		// Creates textfields and Labels where you can search for your favorite artist or song
-		searchLabel = new JLabel("Search for artist");
+		searchLabel = new JLabel("Search");
 		searchLabel.setBounds(0,0,100,15);
 		frmSpooderfi.getContentPane().add(searchLabel);
 		
