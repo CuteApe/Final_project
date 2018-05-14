@@ -19,7 +19,6 @@ public class Song
 		splitName();
 		clip = createClip(file);
 		length = wavDuration();
-		System.out.println(toString());
 	}
 	/**
 	*Splites the filename into the name of the song, name of the artist and album if album name exists in the filename.
@@ -106,7 +105,7 @@ public class Song
 	public String toString()
 	{
 		DecimalFormat df = new DecimalFormat("0.00");
-		return songName + " - " + artist + " - " + df.format(getDuration()).replace(',', '.');
+		return songName + " - " + artist + " - " + df.format(getDuration()).replace(',', ':');
 	}
 	
 	private String setFileName()
