@@ -57,8 +57,8 @@ public class Song
 		
 		double sec = (int)(clip.getBufferSize() / (clip.getFormat().getFrameSize() * clip.getFormat().getFrameRate()));
 		int min = (int) sec/60;
-		min *= 100;
 		sec -= min*60;
+		min *= 100;
 		double duration = Math.round(min + sec);
 		return duration /100;
 	}
