@@ -90,7 +90,7 @@ public class Song
 	
 	public String toString()
 	{
-		return songName + " - " + getAlbum() + " - " + artist + " - " + getDuration();
+		return songName + " - " + artist + " - " + getDuration();
 	}
 	
 	private String setFileName()

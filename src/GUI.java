@@ -119,7 +119,7 @@ public class GUI extends Main
 		dlm = new DefaultListModel<Song>();
 		frmSpooderfi = new JFrame();
 		frmSpooderfi.setResizable(false);
-		frmSpooderfi.setTitle("Spï¿½tiphy");
+		frmSpooderfi.setTitle("Spötiphy");
 		frmSpooderfi.setBounds(100, 100, 460, 400);
 		frmSpooderfi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSpooderfi.getContentPane().setLayout(null);
@@ -135,10 +135,7 @@ public class GUI extends Main
 		play = new JButton("Play");
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				volume(slider.getValue());
-				//path = songsTabel.find(songs.get(playList.getSelectedIndex()));
-				System.out.println(playList.getSelectedValue());
-				
+				volume(slider.getValue());				
 				path = songsTabel.find(dlm.getElementAt(playList.getSelectedIndex()));
 						
 				if(sound.isActive())
@@ -175,16 +172,39 @@ public class GUI extends Main
 		frmSpooderfi.getContentPane().add(stop);
 		
 		//HERE
-		JButton sortSong = new JButton("Sort By Song");
+		JButton sortSong = new JButton("Titel");
 		sortSong.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				sortBy("Song");
+			}
+		});
+		sortSong.setBounds(55, 95, 75, 25);
+		frmSpooderfi.getContentPane().add(sortSong);
+		
+		JButton sortArtist = new JButton("Artist");
+		sortArtist.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				sortBy("Artist");
+			}
+		});
+		sortArtist.setBounds(130, 95, 75, 25);
+		frmSpooderfi.getContentPane().add(sortArtist);
+		
+		JButton sortDuration = new JButton("Duration");
+		sortDuration.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				sortBy("Duration");
 			}
 		});
-		sortSong.setBounds(150, 150, 50, 50);
-		frmSpooderfi.getContentPane().add(sortSong);
+		sortDuration.setBounds(205, 95, 90, 25);
+		frmSpooderfi.getContentPane().add(sortDuration);
+		
 		
 		JButton btnPause = new JButton("Pause");
 		btnPause.addActionListener(new ActionListener() 
