@@ -21,7 +21,6 @@ public class GUI extends Main
 	Song currentSong;
 	public JButton 
 		play,
-		stop,
 		pause,
 		sortArtist,
 		sortSong,
@@ -95,16 +94,7 @@ public class GUI extends Main
    			DecimalFormat df = new DecimalFormat("0.00");
    			timeBar.setString(String.valueOf(df.format(time).replace(',', ':')));
        }
-	       
      };
-     
-     final Runnable AutoPlay = new Runnable() 
- 	{
-        public void run() 
-        { 
-        	//Kod f�r AutoPlay
-        }
- 	};
 	/**
 	 * Plays sound at and uses the right time if sound has been paused
 	 * @param musicName
@@ -220,19 +210,6 @@ public class GUI extends Main
 		timeBar.setBounds(55, 300, 370, 20);
 		timeBar.setString("");
 		frmSpooderfi.getContentPane().add(timeBar);
-		
-		// Creates the Stop Button and gives its function and adds it to the frame
-		JButton stop = new JButton("Stop");
-		stop.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				stop();
-				volume(slider.getValue());
-			}
-		});
-		stop.setBounds(55, 320, 120, 35);
-		frmSpooderfi.getContentPane().add(stop);
 		
 		// Creates the Title Button and gives its function and adds it to the frame
 		JButton sortSong = new JButton("Titel");

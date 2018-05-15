@@ -1,7 +1,7 @@
 import java.io.*;
 import java.text.DecimalFormat;
-
 import javax.sound.sampled.*;
+
 public class Song 
 {
 	private String 
@@ -21,9 +21,9 @@ public class Song
 		length = wavDuration();
 	}
 	/**
-	*Splites the filename into the name of the song, name of the artist and album if album name exists in the filename.
-	*Requires the filename to be in a specific format, Artist - Album - Song name.
-	*Where "-" is used as a divider between the different names.
+	*Splites the filename into the name of the song and name of the artist.
+	*Requires the filename to be in a specific format, Artist - Song name.
+	*Where '-' is used as a divider between the different names.
 	*/
 	private void splitName()
 	{
@@ -61,8 +61,8 @@ public class Song
 	}
 	
 	/**
-	 * Makes use of Clip to calculate the duration of the song with
-	 * @return the duration of the .wav clip; duration of the song, where the decimals represent whole seconds and not fractions of a minute.
+	 * Makes use of Clip information bufferSize, frameSize and frameRate to calculate the duration of the clip.
+	 * @return the duration of the .wav clip; song, where the decimals represent whole seconds and not fractions of a minute.
 	 * If a clip doesn't exist of the song it returns -1.
 	 */
 	private double wavDuration()
@@ -78,13 +78,13 @@ public class Song
 	}
 	
 	/**
-	 * 
-	 * @param song 
+	 * Creates a clip with the encoding format PCM_SINGED 
+	 * @param songFile - file of the song which you want to create a clip of.
 	 * @return clip with PCM_SIGNED encoding
 	 */
-	private Clip createClip(File song) throws Exception
+	private Clip createClip(File songFile) throws Exception
 	{
-		AudioInputStream stream = AudioSystem.getAudioInputStream(song);
+		AudioInputStream stream = AudioSystem.getAudioInputStream(songFile);
 		AudioFormat format = stream.getFormat();
 		if(format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED)
 		{
@@ -101,13 +101,21 @@ public class Song
 		clip.close();	
 		return clip;
 	}
-	
+	 
+	/**
+	 * Creates a string with song name, artist and the duration o the sing, where duration has the DecimalFormat "0.00" and '.' is replaced with ':'
+	 * @return a string in the format "Song - Artist - X:YY"
+	 */
 	public String toString()
 	{
 		DecimalFormat df = new DecimalFormat("0.00");
 		return songName + " - " + artist + " - " + df.format(getDuration()).replace(',', ':');
 	}
 	
+	/**
+	 * Creates a string 
+	 * @return 
+	 */
 	private String setFileName()
 	{
 		for(int i = path.length(); i >= 0; i--)
@@ -121,11 +129,17 @@ public class Song
 		return null;
 	}
 	
+	/**
+	 * @return
+	 */
 	public double getDuration()
 	{
 		return length;
 	}
 	
+	/**
+	 * @return
+	 */
 	public int getSeconds()
 	{
 		int min = (int)length;
@@ -134,26 +148,41 @@ public class Song
 		return min*60 + (int)sec;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String getSongName()
 	{
 		return songName;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String getArtist()
 	{
 		return artist;
 	}
 	
+	/**
+	 * @return
+	 */
 	public int compareTo(String s)
 	{
 		return toString().compareTo(s);
 	}
 	
+	/**
+	 * @return
+	 */
 	public String getPath()
 	{
 		return path;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Clip getClip()
 	{
 		return clip;
