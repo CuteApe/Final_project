@@ -37,7 +37,7 @@ public class GUI extends Main
 	public JLabel searchLabel;
 	public JTextField searchTextField;
 	private DefaultListModel<Song> dlm;
-	ScheduledExecutorService executor;
+	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 	/**
 	 * The constructor of GUI
 	 */
@@ -86,6 +86,7 @@ public class GUI extends Main
 	{
        public void run() 
        { 
+    	   autoPlay();
     	   	int secPos = (int)sound.getMicrosecondPosition()/1000000;
     	   	double sec = secPos;
     	   	int min = (int) sec/60;
@@ -93,20 +94,40 @@ public class GUI extends Main
     		sec /= 100;
     		double time = min + sec;
    			timeBar.setValue(secPos);
-   			System.out.println(time);
    			DecimalFormat df = new DecimalFormat("0.00");
    			timeBar.setString(String.valueOf(df.format(time).replace(',', ':')));
+   			
        }
 	       
      };
      
-     final Runnable AutoPlay = new Runnable() 
- 	{
-        public void run() 
+        public void autoPlay() 
         { 
         	//Kod för AutoPlay
+        	if(timeBar.getValue() == timeBar.getMaximum())
+        	{
+        		try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        		if(playList.getSelectedIndex()+1 == dlm.getSize() )
+        		{
+        			currentSong = dlm.getElementAt(0);
+        			playList.setSelectedIndex(0);
+        		}
+        		else
+        		{
+        			currentSong = dlm.getElementAt(playList.getSelectedIndex()+1);
+        			playList.setSelectedIndex(playList.getSelectedIndex()+1);
+        		}
+				path = songsTabel.find(currentSong);
+				lastSong = path;
+				playMusic(path);
+				timeBar.setMaximum(currentSong.getSeconds());
+        	}
         }
- 	};
 	/**
 	 * Plays sound at and uses the right time if sound has been paused
 	 * @param musicName
@@ -171,9 +192,8 @@ public class GUI extends Main
 	 */
 	private void initialize() 
 	{
-		executor = Executors.newSingleThreadScheduledExecutor();
-		executor.scheduleAtFixedRate(UpdateBar, 10, 1000, TimeUnit.MILLISECONDS);
-		
+		executor.scheduleAtFixedRate(UpdateBar, 100, 1000, TimeUnit.MILLISECONDS);
+	
 		//Creates a dlm and a frame
 		dlm = new DefaultListModel<Song>();
 		frmSpooderfi = new JFrame();
