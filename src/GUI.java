@@ -201,7 +201,7 @@ public class GUI extends Main
 				timeBar.setMaximum(currentSong.getSeconds());
 			}
 		});
-		play.setBounds(180, 320, 120, 35);
+		play.setBounds(55, 320, 120, 35);
 		frmSpooderfi.getContentPane().add(play);
 	
 		timeBar = new JProgressBar(0, 1);
@@ -256,7 +256,7 @@ public class GUI extends Main
 				volume(slider.getValue());
 			}
 		});
-		btnPause.setBounds(305, 320, 120, 35);
+		btnPause.setBounds(180, 320, 120, 35);
 		frmSpooderfi.getContentPane().add(btnPause);
 		
 		// Creates Textfields and Labels where you can search for your favorite artist or song
