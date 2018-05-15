@@ -55,11 +55,11 @@ public class GUI extends Main
 	 * Changes the volume of sound
 	 * @param slider which is a float
 	 */
-	public void volume(float slider)
+	public void volume(float vSlider)
 	{
 		if(sound.isActive())
 		{
-			increase = slider/100;
+			increase = vSlider/100;
 			volume = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
 			dB = (float)(Math.log(increase)/Math.log(10.0)*20.0);
 			volume.setValue(dB);
@@ -119,7 +119,7 @@ public class GUI extends Main
         		}
 				path = songsTabel.find(currentSong);
 				lastSong = path;
-				playMusic(path);
+				playMusic(path, slider.getValue());
 				timeBar.setMaximum(currentSong.getSeconds());
         	}
         }
@@ -127,7 +127,7 @@ public class GUI extends Main
 	 * Plays sound at and uses the right time if sound has been paused
 	 * @param musicName
 	 */
-	public void playMusic(String musicName) 
+	public void playMusic(String musicName, float vSlider) 
 	{
 		if(!sound.isActive())
 		{
@@ -139,7 +139,10 @@ public class GUI extends Main
 			    sound.setMicrosecondPosition(musicTime);
 			    musicTime = 0;
 			    sound.start();
-			    volume(slider.getValue());
+			    increase = vSlider/100;
+				volume = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
+				dB = (float)(Math.log(increase)/Math.log(10.0)*20.0);
+				volume.setValue(dB);
 		    }
 		   catch(Exception ex) 
 			{
@@ -226,7 +229,7 @@ public class GUI extends Main
 					volume(slider.getValue());
 				}
 				lastSong = path;
-				playMusic(path);
+				playMusic(path, slider.getValue());
 				timeBar.setMaximum(currentSong.getSeconds());
 			}
 		});
