@@ -170,7 +170,7 @@ public class GUI extends Main
 	private void initialize() 
 	{
 		executor = Executors.newSingleThreadScheduledExecutor();
-		executor.scheduleAtFixedRate(UpdateBar, 10, 1000, TimeUnit.MILLISECONDS);
+		executor.scheduleAtFixedRate(UpdateBar, 100, 1000, TimeUnit.MILLISECONDS);
 		
 		//Creates a dlm and a frame
 		dlm = new DefaultListModel<Song>();
