@@ -1,8 +1,10 @@
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.*;
+
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.ListModel;
 import javax.sound.sampled.*;
 import java.awt.event.*;
 
@@ -16,6 +18,8 @@ public class GUI extends Main
 	public static FloatControl volume;
 	public static float dB;
 	public JSlider slider;
+	JProgressBar timeBar;
+	Song currentSong;
 	public JButton 
 		play,
 		stop,
@@ -32,6 +36,7 @@ public class GUI extends Main
 	public JLabel searchLabel;
 	public JTextField searchTextField;
 	private DefaultListModel<Song> dlm;
+	ScheduledExecutorService executor;
 	/**
 	 * Create the application.
 	 */
@@ -40,7 +45,8 @@ public class GUI extends Main
 		initialize();
 	}
 	
-	public void stop() {
+	public void stop() 
+	{
 		musicTime = 0;
 		sound.setMicrosecondPosition(musicTime);
 		volume(slider.getValue());
@@ -67,6 +73,32 @@ public class GUI extends Main
 	        volume(slider.getValue());
 		}
 	}
+	
+	final Runnable UpdateBar = new Runnable() 
+	{
+       public void run() 
+       { 
+    	   	int secPos = (int)sound.getMicrosecondPosition()/1000000;
+    	   	double sec = secPos;
+    	   	int min = (int) sec/60;
+    		sec -= min*60;
+    		sec /= 100;
+    		double time = min + sec;
+   			timeBar.setValue(secPos);
+   			System.out.println(time);
+   			DecimalFormat df = new DecimalFormat("0.00");
+   			timeBar.setString(String.valueOf(df.format(time).replace(',', ':')));
+       }
+	       
+     };
+     
+     final Runnable AutoPlay = new Runnable() 
+ 	{
+        public void run() 
+        { 
+        	//Kod för AutoPlay
+        }
+ 	};
 	
 	public void playMusic(String musicName) 
 	{
@@ -120,6 +152,10 @@ public class GUI extends Main
 	 */
 	private void initialize() 
 	{
+		executor = Executors.newSingleThreadScheduledExecutor();
+		executor.scheduleAtFixedRate(UpdateBar, 10, 1000, TimeUnit.MILLISECONDS);
+		
+		
 		dlm = new DefaultListModel<Song>();
 		frmSpooderfi = new JFrame();
 		frmSpooderfi.setResizable(false);
@@ -139,8 +175,9 @@ public class GUI extends Main
 		play = new JButton("Play");
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				volume(slider.getValue());				
-				path = songsTabel.find(dlm.getElementAt(playList.getSelectedIndex()));
+				volume(slider.getValue());	
+				currentSong = dlm.getElementAt(playList.getSelectedIndex());
+				path = songsTabel.find(currentSong);
 						
 				if(sound.isActive())
 				{
@@ -153,6 +190,7 @@ public class GUI extends Main
 				}
 				lastSong = path;
 				playMusic(path);
+				timeBar.setMaximum(currentSong.getSeconds());
 			}
 		});
 		play.setBounds(180, 320, 120, 35);
@@ -162,6 +200,26 @@ public class GUI extends Main
 		slider.setOrientation(SwingConstants.VERTICAL);
 		slider.setBounds(0, 170, 43, 191);
 		frmSpooderfi.getContentPane().add(slider);
+		
+		/////////////////////
+		////////////////////
+		/////////////////////
+		////////////////////
+		/////////////////////
+		////////////////////
+		timeBar = new JProgressBar(0, 1);
+		timeBar.setStringPainted(true);
+		timeBar.setBounds(55, 300, 370, 20);
+		timeBar.setString("");
+		frmSpooderfi.getContentPane().add(timeBar);
+		
+
+		/////////////////////
+		////////////////////
+		/////////////////////
+		////////////////////
+		/////////////////////
+		////////////////////
 		
 		JButton stop = new JButton("Stop");
 		stop.addActionListener(new ActionListener() 
@@ -175,7 +233,6 @@ public class GUI extends Main
 		stop.setBounds(55, 320, 120, 35);
 		frmSpooderfi.getContentPane().add(stop);
 		
-		//HERE
 		JButton sortSong = new JButton("Titel");
 		sortSong.addActionListener(new ActionListener()
 		{
@@ -184,7 +241,7 @@ public class GUI extends Main
 				sortBy("Song");
 			}
 		});
-		sortSong.setBounds(55, 95, 75, 25);
+		sortSong.setBounds(55, 75, 75, 25);
 		frmSpooderfi.getContentPane().add(sortSong);
 		
 		JButton sortArtist = new JButton("Artist");
@@ -195,7 +252,7 @@ public class GUI extends Main
 				sortBy("Artist");
 			}
 		});
-		sortArtist.setBounds(130, 95, 75, 25);
+		sortArtist.setBounds(130, 75, 75, 25);
 		frmSpooderfi.getContentPane().add(sortArtist);
 		
 		JButton sortDuration = new JButton("Duration");
@@ -206,7 +263,7 @@ public class GUI extends Main
 				sortBy("Duration");
 			}
 		});
-		sortDuration.setBounds(205, 95, 90, 25);
+		sortDuration.setBounds(205, 75, 90, 25);
 		frmSpooderfi.getContentPane().add(sortDuration);
 		
 		
@@ -240,21 +297,17 @@ public class GUI extends Main
             }
         });
 		frmSpooderfi.getContentPane().add(searchTextField);
-		;
 		
-		
-		//Creates a JList to contain and display all the possible songs
-		//displaySongs = new String[songs.size()];
 		for (Song song: songs)
 			dlm.addElement(song);
 		
-		playList = new JList(dlm);
+		playList = new JList<Song>(dlm);
 		playList.setLayoutOrientation(JList.VERTICAL); //Set the layout so it looks like a list
 		playList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //Set selection to single
 		
 		playList.setModel(dlm);
 		JScrollPane listScroller = new JScrollPane(playList);
-		listScroller.setBounds(55, 120, 370, 200);
+		listScroller.setBounds(55, 100, 370, 200);
 		
 		playList.setVisible(true);
 		
