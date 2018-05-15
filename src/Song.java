@@ -126,6 +126,14 @@ public class Song
 		return length;
 	}
 	
+	public int getSeconds()
+	{
+		int min = (int)length;
+		double sec = length - min;
+		sec *= 100;
+		return min*60 + (int)sec;
+	}
+	
 	public String getSongName()
 	{
 		return songName;

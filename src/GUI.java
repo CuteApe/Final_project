@@ -1,5 +1,8 @@
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.*;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.sound.sampled.*;
@@ -14,6 +17,8 @@ public class GUI extends Main
 	public static FloatControl volume;
 	public static float dB;
 	public JSlider slider;
+	JProgressBar timeBar;
+	Song currentSong;
 	public JButton 
 		play,
 		stop,
@@ -30,21 +35,28 @@ public class GUI extends Main
 	public JLabel searchLabel;
 	public JTextField searchTextField;
 	private DefaultListModel<Song> dlm;
+	ScheduledExecutorService executor;
 	/**
-	 * Create the application.
+	 * The constructor of GUI
 	 */
 	public GUI() 
 	{
 		initialize();
 	}
-	
-	public void stop() {
+	/**
+	 *  Stops the clip from playing and resets the start time of the clip to zero
+	 */
+	public void stop() 
+	{
 		musicTime = 0;
 		sound.setMicrosecondPosition(musicTime);
 		volume(slider.getValue());
 		sound.stop();
 	}
-	
+	/**
+	 * Changes the volume of sound
+	 * @param slider which is a float
+	 */
 	public void volume(float slider)
 	{
 		if(sound.isActive())
@@ -55,7 +67,9 @@ public class GUI extends Main
 			volume.setValue(dB);
 		}
 	}
-	
+	/**
+	 *  Stops sound and remembers when it was stopped
+	 */
 	public void pause() 
 	{
 		if(sound.isActive()) 
@@ -66,6 +80,35 @@ public class GUI extends Main
 		}
 	}
 	
+	final Runnable UpdateBar = new Runnable() 
+	{
+       public void run() 
+       { 
+    	   	int secPos = (int)sound.getMicrosecondPosition()/1000000;
+    	   	double sec = secPos;
+    	   	int min = (int) sec/60;
+    		sec -= min*60;
+    		sec /= 100;
+    		double time = min + sec;
+   			timeBar.setValue(secPos);
+   			System.out.println(time);
+   			DecimalFormat df = new DecimalFormat("0.00");
+   			timeBar.setString(String.valueOf(df.format(time).replace(',', ':')));
+       }
+	       
+     };
+     
+     final Runnable AutoPlay = new Runnable() 
+ 	{
+        public void run() 
+        { 
+        	//Kod f�r AutoPlay
+        }
+ 	};
+	/**
+	 * Plays sound at and uses the right time if sound has been paused
+	 * @param musicName
+	 */
 	public void playMusic(String musicName) 
 	{
 		if(!sound.isActive())
@@ -87,7 +130,10 @@ public class GUI extends Main
 		    }
 		}
 	 }
-	
+	/**
+	 * Sorts the songlist depending on the value of s
+	 * @param s which is a String
+	 */
 	public void sortBy(String s)
 	{
 		Comparator<Song> comp;
@@ -106,6 +152,10 @@ public class GUI extends Main
 			dlm.addElement(songs.get(i));
 		filterList(filter);
 	}
+	/**
+	 * Filters the songlist
+	 * @param filter which is a String
+	 */
 	public void filterList(String filter)
 	{
 		dlm.clear();
@@ -115,9 +165,14 @@ public class GUI extends Main
 	}
 	/**
 	 * Initialize the contents of the frame.
+	 * And the function of the JButtons,JList and JSlider are here too
 	 */
 	private void initialize() 
 	{
+		executor = Executors.newSingleThreadScheduledExecutor();
+		executor.scheduleAtFixedRate(UpdateBar, 10, 1000, TimeUnit.MILLISECONDS);
+		
+		//Creates a dlm and a frame
 		dlm = new DefaultListModel<Song>();
 		
 		frmSpooderfi = new JFrame();
@@ -135,11 +190,13 @@ public class GUI extends Main
 			e1.printStackTrace();
 		}
 		
+		// Creates the Play Button and gives its function and adds it to the frame
 		play = new JButton("Play");
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				volume(slider.getValue());				
-				path = songsTabel.find(dlm.getElementAt(playList.getSelectedIndex()));
+				volume(slider.getValue());	
+				currentSong = dlm.getElementAt(playList.getSelectedIndex());
+				path = songsTabel.find(currentSong);
 						
 				if(sound.isActive())
 				{
@@ -152,16 +209,19 @@ public class GUI extends Main
 				}
 				lastSong = path;
 				playMusic(path);
+				timeBar.setMaximum(currentSong.getSeconds());
 			}
 		});
 		play.setBounds(180, 320, 120, 35);
 		frmSpooderfi.getContentPane().add(play);
+	
+		timeBar = new JProgressBar(0, 1);
+		timeBar.setStringPainted(true);
+		timeBar.setBounds(55, 300, 370, 20);
+		timeBar.setString("");
+		frmSpooderfi.getContentPane().add(timeBar);
 		
-		slider = new JSlider();
-		slider.setOrientation(SwingConstants.VERTICAL);
-		slider.setBounds(0, 170, 43, 191);
-		frmSpooderfi.getContentPane().add(slider);
-		
+		// Creates the Stop Button and gives its function and adds it to the frame
 		JButton stop = new JButton("Stop");
 		stop.addActionListener(new ActionListener() 
 		{
@@ -174,7 +234,7 @@ public class GUI extends Main
 		stop.setBounds(55, 320, 120, 35);
 		frmSpooderfi.getContentPane().add(stop);
 		
-		//HERE
+		// Creates the Title Button and gives its function and adds it to the frame
 		JButton sortSong = new JButton("Titel");
 		sortSong.addActionListener(new ActionListener()
 		{
@@ -183,9 +243,10 @@ public class GUI extends Main
 				sortBy("Song");
 			}
 		});
-		sortSong.setBounds(55, 95, 75, 25);
+		sortSong.setBounds(55, 75, 75, 25);
 		frmSpooderfi.getContentPane().add(sortSong);
 		
+		// Creates the Artist Button and gives its function and adds it to the frame
 		JButton sortArtist = new JButton("Artist");
 		sortArtist.addActionListener(new ActionListener()
 		{
@@ -194,9 +255,10 @@ public class GUI extends Main
 				sortBy("Artist");
 			}
 		});
-		sortArtist.setBounds(130, 95, 75, 25);
+		sortArtist.setBounds(130, 75, 75, 25);
 		frmSpooderfi.getContentPane().add(sortArtist);
 		
+		// Creates the Duration Button and gives its function and adds it to the frame
 		JButton sortDuration = new JButton("Duration");
 		sortDuration.addActionListener(new ActionListener()
 		{
@@ -205,10 +267,10 @@ public class GUI extends Main
 				sortBy("Duration");
 			}
 		});
-		sortDuration.setBounds(205, 95, 90, 25);
+		sortDuration.setBounds(205, 75, 90, 25);
 		frmSpooderfi.getContentPane().add(sortDuration);
 		
-		
+		// Creates the Pause Button and gives its function and adds it to the frame
 		JButton btnPause = new JButton("Pause");
 		btnPause.addActionListener(new ActionListener() 
 		{
@@ -221,8 +283,9 @@ public class GUI extends Main
 		btnPause.setBounds(305, 320, 120, 35);
 		frmSpooderfi.getContentPane().add(btnPause);
 		
-		// Creates textfields and Labels where you can search for your favorite artist or song
-		searchLabel = new JLabel("Search for artist");
+		// Creates Textfields and Labels where you can search for your favorite artist or song
+		// If somthing is written in the TextField then it will use filterList
+		searchLabel = new JLabel("Search");
 		searchLabel.setBounds(0,0,100,15);
 		frmSpooderfi.getContentPane().add(searchLabel);
 		
@@ -239,28 +302,36 @@ public class GUI extends Main
             }
         });
 		frmSpooderfi.getContentPane().add(searchTextField);
-		;
 		
-		
-		//Creates a JList to contain and display all the possible songs
-		//displaySongs = new String[songs.size()];
+		// dlm gets everysong
 		for (Song song: songs)
 			dlm.addElement(song);
 		
-		playList = new JList(dlm);
+		// playList gets its value and we set layout of it
+		playList = new JList<Song>(dlm);
 		playList.setLayoutOrientation(JList.VERTICAL); //Set the layout so it looks like a list
 		playList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //Set selection to single
-		
 		playList.setModel(dlm);
-		JScrollPane listScroller = new JScrollPane(playList);
-		listScroller.setBounds(55, 120, 370, 200);
 		
+		// We put playList in a JScrollPane
+		JScrollPane listScroller = new JScrollPane(playList);
+		listScroller.setBounds(55, 100, 370, 200);
+		
+		// Makes playList visable
 		playList.setVisible(true);
 		
+		// We add listScroller to our frame
 		frmSpooderfi.getContentPane().add(listScroller);
 		
-		slider.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e){
+		// Creates the volume slider and gives its function and adds it to the frame
+		slider = new JSlider();
+		slider.setOrientation(SwingConstants.VERTICAL);
+		slider.setBounds(0, 170, 43, 191);
+		frmSpooderfi.getContentPane().add(slider);
+		slider.addChangeListener(new ChangeListener() 
+		{
+			public void stateChanged(ChangeEvent e)
+			{
 				volume(slider.getValue());
 			}
 		});
