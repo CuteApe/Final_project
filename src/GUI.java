@@ -2,7 +2,6 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.*;
-
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.sound.sampled.*;
@@ -90,7 +89,6 @@ public class GUI extends Main
     		sec /= 100;
     		double time = min + sec;
    			timeBar.setValue(secPos);
-   			System.out.println(time);
    			DecimalFormat df = new DecimalFormat("0.00");
    			timeBar.setString(String.valueOf(df.format(time).replace(',', ':')));
        }
@@ -121,8 +119,9 @@ public class GUI extends Main
 		}
 	 }
 	/**
-	 * Sorts the songlist depending on the value of s
-	 * @param s which is a String
+	 * Sorts the DefaultListModel depending on s 
+	 * @param s - value to sort by
+	 * @see DefaultListModel
 	 */
 	public void sortBy(String s)
 	{
@@ -144,7 +143,7 @@ public class GUI extends Main
 	}
 	/**
 	 * Filters the songlist
-	 * @param filter which is a String
+	 * @param filter - the String to filter the list by
 	 */
 	public void filterList(String filter)
 	{
