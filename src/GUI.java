@@ -98,7 +98,6 @@ public class GUI extends Main
      
         public void autoPlay() 
         { 
-        	//Kod fï¿½r AutoPlay
         	if(timeBar.getValue() == timeBar.getMaximum())
         	{
         		try {
@@ -195,7 +194,7 @@ public class GUI extends Main
 		
 		frmSpooderfi = new JFrame();
 		frmSpooderfi.setResizable(false);
-		frmSpooderfi.setTitle("Spï¿½tiphy");
+		frmSpooderfi.setTitle("Spötiphy");
 		frmSpooderfi.setBounds(100, 100, 460, 400);
 		frmSpooderfi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSpooderfi.getContentPane().setLayout(null);
