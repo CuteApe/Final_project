@@ -10,28 +10,28 @@ import java.awt.event.*;
 public class GUI extends Main
 {
 	public JFrame frmSpooderfi;
-	public static long musicTime = 0;
-	public static Clip sound;
-	public static double increase;
-	public static FloatControl volume;
-	public static float dB;
-	public JSlider slider;
+	private static long musicTime = 0;
+	private static Clip sound;
+	private static double increase;
+	private static FloatControl volume;
+	private static float dB;
+	private JSlider slider;
 	JProgressBar timeBar;
 	Song currentSong;
-	public JButton 
+	private JButton 
 		play,
 		pause,
 		sortArtist,
 		sortSong,
 		sortDur;
-	public String[] displaySongs;
-	public JList<Song> playList;
-	public String[] displaySearch;
-	public String lastSong = "";
-	public String path = "";
+	private String[] displaySongs;
+	private JList<Song> playList;
+	private String[] displaySearch;
+	private String lastSong = "";
+	private String path = "";
 	private String filter = "";
-	public JLabel searchLabel;
-	public JTextField searchTextField;
+	private JLabel searchLabel;
+	private JTextField searchTextField;
 	private DefaultListModel<Song> dlm;
 	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 	/**
@@ -197,7 +197,7 @@ public class GUI extends Main
 		
 		frmSpooderfi = new JFrame();
 		frmSpooderfi.setResizable(false);
-		frmSpooderfi.setTitle("Spötiphy");
+		frmSpooderfi.setTitle("Spï¿½tiphy");
 		frmSpooderfi.setBounds(100, 100, 460, 400);
 		frmSpooderfi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSpooderfi.getContentPane().setLayout(null);

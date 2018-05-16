@@ -5,7 +5,7 @@ public class HashTabel
 	int itmInArray;
 
 	
-/**
+/*
 * ----------------------------------------------------------------------------------------------
 * ----------------------------------------------------------------------------------------------
 * Constructors
@@ -38,7 +38,11 @@ public class HashTabel
  * ----------------------------------------------------------------------------------------------
  * Public functions
  */
-	//Insert function to insert a new song into the table
+	/**
+	 * Insert function to insert a new song into the table
+	 * @param newSong, Song object containing the path, artist and song name
+	 * @see Song
+	 */
 	public void insert(Song newSong)
 	{
 		 String artist = newSong.getArtist(); //Hash the artist name to
@@ -47,7 +51,11 @@ public class HashTabel
 		 array[hashVal].insert(newSong);
 	}
 	
-	//Function to find a return a clip to play a song using the list displayed
+	/**
+	 * Find function to find and be able to play a song
+	 * @param The song you wish to find
+	 * @see Song
+	 */
 	public String find(Song s)
 	{
 		 String artist = s.getArtist(); //Hash the artist name to
@@ -68,7 +76,11 @@ public class HashTabel
  * Private functions
  */
 	
-	//Hashing function for the Artists name to get a index in the array
+	/**
+	 * Hashing function for the Artists name to get a index in the array
+	 * @param string to be hashed
+	 * @return the hashed value of the string
+	 */
 	private int hashFunc(String s)
 	{
 		int hashKeyVal = 0;	//Variable to carry over the result from the previous letter in the string
