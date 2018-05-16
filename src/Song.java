@@ -130,7 +130,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return double - duration where decimals represent whole seconds and not fraction of minutes.
 	 */
 	public double getDuration()
 	{
@@ -138,7 +138,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return int - the duration of the song in seconds
 	 */
 	public int getSeconds()
 	{
@@ -149,7 +149,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return String - the name of the song
 	 */
 	public String getSongName()
 	{
@@ -157,7 +157,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return String - the name of the artist
 	 */
 	public String getArtist()
 	{
@@ -165,7 +165,9 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * Compares two songs lexicographically.
+	 * @return int - 0 if songs is equally lexicographically; < 0 if this song is less lexicographically; > 0 if this song is greater lexicographically
+	 * @see String.CompareTo
 	 */
 	public int compareTo(String s)
 	{
@@ -173,7 +175,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return String - path to this song
 	 */
 	public String getPath()
 	{
@@ -181,7 +183,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return Clip - return PCM_SIGNED encoded clip
 	 */
 	public Clip getClip()
 	{

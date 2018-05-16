@@ -1,6 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.File;
+import java.io.*;
 
 import javax.sound.sampled.AudioFormat;
 import javax.swing.JFileChooser;
@@ -12,7 +12,7 @@ class SongTest
 {
 	Song songTest;
 	@BeforeEach
-	void setUp() throws Exception 
+	void setUp() throws Exception, FileNotFoundException
 	{
 		//For this test we'll use Shots by Imagine Dragons
 		//Sets path to Document/TestMusic
