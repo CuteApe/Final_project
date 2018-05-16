@@ -12,7 +12,7 @@ public class Song
 	private double length;
 	private Clip clip;
 	
-	public Song(File file) throws Exception
+	public Song(File file) throws Exception, FileNotFoundException
 	{
 		path = file.getAbsolutePath();
 		fileName = setFileName();
@@ -25,7 +25,7 @@ public class Song
 	*Requires the filename to be in a specific format, Artist - Song name.
 	*Where '-' is used as a divider between the different names.
 	*/
-	public void splitName()
+	private void splitName()
 	{
 		for(int i = 0; i < fileName.length() - 1; i++)
 		{
@@ -65,7 +65,7 @@ public class Song
 	 * @return the duration of the .wav clip; song, where the decimals represent whole seconds and not fractions of a minute.
 	 * If a clip doesn't exist of the song it returns -1.
 	 */
-	public double wavDuration()
+	private double wavDuration()
 	{
 		if(clip == null)
 			return -1;
@@ -82,7 +82,7 @@ public class Song
 	 * @param songFile - file of the song which you want to create a clip of.
 	 * @return clip with PCM_SIGNED encoding
 	 */
-	public Clip createClip(File songFile) throws Exception
+	private Clip createClip(File songFile) throws Exception
 	{
 		AudioInputStream stream = AudioSystem.getAudioInputStream(songFile);
 		AudioFormat format = stream.getFormat();
@@ -104,7 +104,7 @@ public class Song
 	 
 	/**
 	 * Creates a string with song name, artist and the duration o the sing, where duration has the DecimalFormat "0.00" and '.' is replaced with ':'
-	 * @return a string in the format "Song - Artist - X:YY"
+	 * @return string in the format "Song - Artist - X:YY"
 	 */
 	public String toString()
 	{
@@ -113,8 +113,8 @@ public class Song
 	}
 	
 	/**
-	 * Creates a string 
-	 * @return 
+	 * Creates a string representing the name of the file
+	 * @return string with the file name
 	 */
 	public String setFileName()
 	{
