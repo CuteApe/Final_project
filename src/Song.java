@@ -12,7 +12,7 @@ public class Song
 	private double length;
 	private Clip clip;
 	
-	public Song(File file) throws Exception
+	public Song(File file) throws Exception, FileNotFoundException
 	{
 		path = file.getAbsolutePath();
 		fileName = setFileName();
@@ -25,7 +25,7 @@ public class Song
 	*Requires the filename to be in a specific format, Artist - Song name.
 	*Where '-' is used as a divider between the different names.
 	*/
-	public void splitName()
+	private void splitName()
 	{
 		for(int i = 0; i < fileName.length() - 1; i++)
 		{
@@ -65,7 +65,7 @@ public class Song
 	 * @return the duration of the .wav clip; song, where the decimals represent whole seconds and not fractions of a minute.
 	 * If a clip doesn't exist of the song it returns -1.
 	 */
-	public double wavDuration()
+	private double wavDuration()
 	{
 		if(clip == null)
 			return -1;
@@ -82,7 +82,7 @@ public class Song
 	 * @param songFile - file of the song which you want to create a clip of.
 	 * @return clip with PCM_SIGNED encoding
 	 */
-	public Clip createClip(File songFile) throws Exception
+	private Clip createClip(File songFile) throws Exception
 	{
 		AudioInputStream stream = AudioSystem.getAudioInputStream(songFile);
 		AudioFormat format = stream.getFormat();
@@ -104,7 +104,7 @@ public class Song
 	 
 	/**
 	 * Creates a string with song name, artist and the duration o the sing, where duration has the DecimalFormat "0.00" and '.' is replaced with ':'
-	 * @return a string in the format "Song - Artist - X:YY"
+	 * @return string in the format "Song - Artist - X:YY"
 	 */
 	public String toString()
 	{
@@ -113,8 +113,8 @@ public class Song
 	}
 	
 	/**
-	 * Creates a string 
-	 * @return 
+	 * Creates a string representing the name of the file
+	 * @return string with the file name
 	 */
 	public String setFileName()
 	{
@@ -130,7 +130,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return double - duration where decimals represent whole seconds and not fraction of minutes.
 	 */
 	public double getDuration()
 	{
@@ -138,7 +138,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return int - the duration of the song in seconds
 	 */
 	public int getSeconds()
 	{
@@ -149,7 +149,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return String - the name of the song
 	 */
 	public String getSongName()
 	{
@@ -157,7 +157,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return String - the name of the artist
 	 */
 	public String getArtist()
 	{
@@ -165,7 +165,9 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * Compares two songs lexicographically.
+	 * @return int - 0 if songs is equally lexicographically; < 0 if this song is less lexicographically; > 0 if this song is greater lexicographically
+	 * @see String.CompareTo
 	 */
 	public int compareTo(String s)
 	{
@@ -173,7 +175,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return String - path to this song
 	 */
 	public String getPath()
 	{
@@ -181,7 +183,7 @@ public class Song
 	}
 	
 	/**
-	 * @return
+	 * @return Clip - return PCM_SIGNED encoded clip
 	 */
 	public Clip getClip()
 	{
