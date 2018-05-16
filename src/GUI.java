@@ -98,7 +98,6 @@ public class GUI extends Main
      
         public void autoPlay() 
         { 
-        	//Kod f�r AutoPlay
         	if(timeBar.getValue() == timeBar.getMaximum())
         	{
         		try {
