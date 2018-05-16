@@ -78,6 +78,9 @@ public class GUI extends Main
 		}
 	}
 	
+	/**
+	 * Gets called every second to update the "progress" bar which shows how far into the Song you are.
+	 */
 	final Runnable UpdateBar = new Runnable() 
 	{
        public void run() 
