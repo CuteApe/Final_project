@@ -34,7 +34,7 @@ public class HashTabelTest {
 	public void testInsertandFind()
 	{
 		tabel.insert(one);
-		assertEquals("Checks if insert function actually inserts the song and that it can be found and returns the path", "C:\\Users\\oskar\\workspace\\Final_Project\\Final_project\\MGK - Swing life away.wav", tabel.find(one));
+		assertEquals("Checks if insert function actually inserts the song and that it can be found and returns the path", "C:\\Users\\Simon Nordqvist\\Desktop\\CuteApeWorkspace\\CuteApeProject\\Final_project\\MGK - Swing life away.wav", tabel.find(one));
 	}
 
 }

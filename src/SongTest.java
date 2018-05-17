@@ -1,51 +1,52 @@
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.*;
 
 import javax.sound.sampled.AudioFormat;
 import javax.swing.JFileChooser;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-class SongTest 
+public class SongTest 
 {
 	Song songTest;
-	@BeforeEach
-	void setUp() throws Exception, FileNotFoundException
+	@Before
+	public void setUp() throws Exception, FileNotFoundException
 	{
-		//For this test we'll use Shots by Imagine Dragons
+		//For this test we'll use MANS NOT HOT by Big Shaq
 		//Sets path to Document/TestMusic
-		String foldPath = new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/TestMusic";
+		String foldPath = new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/Music";
 		File folder = new File(foldPath);
 		
 		if(!folder.exists())
 			new File(foldPath).mkdir();
 		File[] folderFiles = folder.listFiles();
 		
-		//Creates a song of the first file in the folder Document/TestMusic to use in the testing.
+		//Creates a song of the first file in the folder Document/Music to use in the testing.
 		songTest = new Song(folderFiles[0]);
 	}
 
 	@Test
-	void testSetFileName() 
+	public void testSetFileName() 
 	{
 		songTest.setFileName();
-		assertTrue(songTest.getArtist().equals("Imagine Dragons"),"Checks that artist name has been correctly named");
-		assertTrue(songTest.getSongName().equals("Shots"),"Checks that song name has been correctly named");
+		assertTrue("Checks that artist name has been correctly named",songTest.getArtist().equals("Big Shaq"));
+		assertTrue("Checks that song name has been correctly named",songTest.getSongName().equals("MANS NOT HOT"));
 		
 	}
 
 	@Test
-	void testGetDuration() 
+	public void testGetDuration() 
 	{
-		assertEquals(4.01, songTest.getDuration(), "Calls on the getDuration method which returns the duration calculated earlier by wavDuration");
+		assertEquals( "Calls on the getDuration method which returns the duration calculated earlier by wavDuration", 3.05, songTest.getDuration(),0.0);
 	}
 
 	@Test
-	void testGetClip() 
+	public void testGetClip() 
 	{
-		assertEquals(AudioFormat.Encoding.PCM_SIGNED, songTest.getClip().getFormat().getEncoding(), "Makes sure that the encoding of the clip is of format PCM_SIGNED");
+		assertEquals("Makes sure that the encoding of the clip is of format PCM_SIGNED", AudioFormat.Encoding.PCM_SIGNED, songTest.getClip().getFormat().getEncoding());
 	}
 
 }
